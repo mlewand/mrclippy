@@ -8,7 +8,14 @@ const clip = {
 		return winClipboard.getData( type );
 	},
 	readText: function( type ) {
-		return winClipboard.getText( type  );
+
+		let encoding = null;
+
+		if ( [ 'CF_UNICODETEXT', 'CF_TEXT' ].includes( type ) == false ) {
+			encoding = 'utf8';
+		}
+
+		return winClipboard.getText( type, encoding );
 	}
 };
 
