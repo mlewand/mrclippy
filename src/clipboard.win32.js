@@ -1,8 +1,9 @@
 'use strict';
 
-const winClipboard = require( 'win-clipboard' );
+const base = require( './clipboard.base' ),
+	winClipboard = require( 'win-clipboard' );
 
-const clip = {
+module.exports = Object.assign( {}, base, {
 	availableFormats: () => winClipboard.getFormats(),
 	read: function( type ) {
 		return winClipboard.getData( type );
@@ -17,6 +18,4 @@ const clip = {
 
 		return winClipboard.getText( type, encoding );
 	}
-};
-
-module.exports = clip;
+} );

@@ -1,11 +1,9 @@
 'use strict';
 
-let clip;
+let clip = require( 'electron' ).clipboard;
 
 if ( process.platform == 'win32' ) {
 	clip = require( './clipboard.win32' );
-} else {
-	clip = require( './clipboard.base' );
 }
 
 module.exports = clip;
