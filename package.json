@@ -29,12 +29,14 @@
   "dependencies": {
     "electron-debug": "^1.0.0",
     "electron-rebuild": "^1.5.7",
+    "entities": "^1.1.1",
     "win-clipboard": "0.0.4"
   },
   "devDependencies": {
     "devtron": "^1.1.0",
     "electron": "^1.3.3",
     "electron-packager": "^8.0.0",
+    "electron-reload": "^1.1.0",
     "xo": "^0.16.0"
   },
   "xo": {

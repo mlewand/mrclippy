@@ -1,17 +1,33 @@
 <!doctype html>
 <html>
+
 	<head>
 		<meta charset="utf-8">
 		<title>Electron boilerplate</title>
 		<link rel="stylesheet" href="index.css">
 	</head>
+
 	<body>
+		<header>
+			<h1>Electron boilerplate</h1>
+		</header>
 		<div class="container">
-			<header>
-				<h1>Electron boilerplate</h1>
-			</header>
-			<section class="main"></section>
-			<footer></footer>
+			<div id="navigation"></div>
+			<div id="preview"></div>
 		</div>
+		<footer></footer>
 	</body>
+
+	<script>
+	const Navigation = require( './src/Component/Navigation' ),
+		MainWindowController = require( './src/MainWindowController' );
+
+	window.controller = new MainWindowController();
+
+	let nav = new Navigation( window.controller );
+
+	const ClipboardSnapshot = require( './src/ClipboardSnapshot' );
+	nav.addItem( new ClipboardSnapshot() );
+	</script>
+
 </html>
