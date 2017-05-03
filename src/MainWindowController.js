@@ -14,7 +14,7 @@
 
 			// Nothing better than mixing view and logic for PoC purpose :D
 			let types = Array.from( item.getTypes() ),
-				content = `<p>${types.length} in total</p>`;
+				content = '';
 
 			for ( let type of types ) {
 				if ( previewType && type !== previewType ) {
