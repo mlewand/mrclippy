@@ -6,6 +6,7 @@ class SnapshotsList extends EventEmitter {
 	constructor() {
 		super();
 		this._store = new Set();
+		this._selected = null;
 	}
 
 	add( item ) {
@@ -20,6 +21,16 @@ class SnapshotsList extends EventEmitter {
 			this.emit( 'removed', item );
 			this.emit( 'changed' );
 		}
+	}
+
+	select( item ) {
+		if ( item === this._selected ) {
+			return;
+		}
+
+		let prevSelected = this._selected;
+		this._selected = item;
+		this.emit( 'selected', item, prevSelected );
 	}
 }
 

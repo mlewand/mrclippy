@@ -29,12 +29,16 @@
 
 	const snapshots = new SnapshotList();
 
+	snapshots.on( 'selected', item => window.controller.previewItem( item ) )
+
 	let nav = new Navigation( window.controller, snapshots ),
 		types = new Types( window.controller, snapshots );
 
 	const ClipboardSnapshot = require( './src/ClipboardSnapshot' );
 
-	snapshots.add( new ClipboardSnapshot() );
+	let initialSnapshot = new ClipboardSnapshot()
+	snapshots.add( initialSnapshot );
+	snapshots.select( initialSnapshot );
 	</script>
 
 </html>

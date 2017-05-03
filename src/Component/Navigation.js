@@ -20,7 +20,7 @@ class Navigation extends Comopnent {
 		ret.classList.add( 'item' );
 		ret.innerHTML = 'This is an example item';
 		ret.addEventListener( 'click', evt => {
-			this.controller.previewItem( item );
+			this.snapshots.select( item );
 		} );
 		return ret;
 	}
