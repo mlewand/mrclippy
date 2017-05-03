@@ -2,8 +2,9 @@
 	"use strict";
 
 	class Navigation {
-		constructor( controller ) {
+		constructor( controller, snapshots ) {
 			this.controller = controller;
+			this.snapshots = snapshots;
 
 			this._elem = document.querySelector( '#navigation' );
 
@@ -11,11 +12,10 @@
 				throw new Error( 'Couldnt find navigation element' );
 			}
 
-			this._items = new Set();
+			snapshots.on( 'added', this.addItem.bind( this ) );
 		}
 
 		addItem( item ) {
-			this._items.add( item );
 			this._elem.appendChild( this.getNavigationFor( item ) );
 		}
 

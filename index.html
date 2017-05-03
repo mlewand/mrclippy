@@ -13,6 +13,7 @@
 		</header>
 		<div class="container">
 			<div id="navigation"></div>
+			<div id="types"></div>
 			<div id="preview"></div>
 		</div>
 		<footer></footer>
@@ -20,14 +21,20 @@
 
 	<script>
 	const Navigation = require( './src/Component/Navigation' ),
-		MainWindowController = require( './src/MainWindowController' );
+		Types = require('./src/Component/Types.js' )
+		MainWindowController = require( './src/MainWindowController' ),
+		SnapshotList = require( './src/SnapshotsList' );
 
 	window.controller = new MainWindowController();
 
-	let nav = new Navigation( window.controller );
+	const snapshots = new SnapshotList();
+
+	let nav = new Navigation( window.controller, snapshots ),
+		types = new Types( window.controller, snapshots );
 
 	const ClipboardSnapshot = require( './src/ClipboardSnapshot' );
-	nav.addItem( new ClipboardSnapshot() );
+
+	snapshots.add( new ClipboardSnapshot() );
 	</script>
 
 </html>
