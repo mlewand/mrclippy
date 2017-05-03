@@ -1,39 +1,29 @@
-( function() {
-	"use strict";
+"use strict";
 
-	class Navigation {
-		constructor( controller ) {
-			this.controller = controller;
+const Comopnent = require( './Component' );
 
-			this._elem = document.querySelector( '#navigation' );
+class Navigation extends Comopnent {
+	constructor( controller, snapshots ) {
+		super( controller, 'navigation' );
+		this.snapshots = snapshots;
 
-			if ( !this._elem ) {
-				throw new Error( 'Couldnt find navigation element' );
-			}
-
-			this._items = new Set();
-		}
-
-		addItem( item ) {
-			this._items.add( item );
-			this._elem.appendChild( this.getNavigationFor( item ) );
-		}
-
-		getNavigationFor( item ) {
-			let ret = document.createElement( 'a' );
-			ret.href = '#';
-			ret.classList.add( 'item' );
-			ret.innerHTML = 'This is an example item';
-			ret.addEventListener( 'click', evt => {
-				this.controller.previewItem( item );
-			} );
-			return ret;
-		}
-
-		getElement() {
-			return this._elem;
-		}
+		snapshots.on( 'added', this.addItem.bind( this ) );
 	}
 
-	module.exports = Navigation;
-} )();
+	addItem( item ) {
+		this._elem.appendChild( this.getNavigationFor( item ) );
+	}
+
+	getNavigationFor( item ) {
+		let ret = document.createElement( 'a' );
+		ret.href = '#';
+		ret.classList.add( 'item' );
+		ret.innerHTML = 'This is an example item';
+		ret.addEventListener( 'click', evt => {
+			this.snapshots.select( item );
+		} );
+		return ret;
+	}
+}
+
+module.exports = Navigation;

@@ -14,7 +14,8 @@ body {
 
 .container,
 #preview,
-#navigation {
+#navigation,
+#types {
 	outline: 2px solid blue;
 	display: flex;
 }
@@ -24,7 +25,8 @@ body {
 	flex-direction: row;
 }
 
-#navigation {
+#navigation,
+#types {
 	flex-direction: column;
 	min-width: 200px;
 }
