@@ -1,24 +1,14 @@
-( function() {
-	"use strict";
+"use strict";
 
-	/**
-	 * Types component, displaying a list of clipboard formats.
-	 */
-	class Types {
-		constructor( controller ) {
-			this.controller = controller;
+const Comopnent = require( './Component' );
 
-			this._elem = document.querySelector( '#types' );
-
-			if ( !this._elem ) {
-				throw new Error( 'Couldnt find types element' );
-			}
-		}
-
-		getElement() {
-			return this._elem;
-		}
+/**
+ * Types component, displaying a list of clipboard formats.
+ */
+class Types extends Comopnent {
+	constructor( controller ) {
+		super( controller, 'types' );
 	}
+}
 
-	module.exports = Types;
-} )();
+module.exports = Types;
