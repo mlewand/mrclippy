@@ -2,26 +2,39 @@ html,
 body {
 	padding: 0;
 	margin: 0;
+	height: 100%;
 }
 
 body {
-	font-family: -apple-system, 'Helvetica Neue', Helvetica, sans-serif;
+	flex: 1;
+	flex-flow: column;
+	display: flex;
+	font-family: 'Helvetica Neue', Helvetica, sans-serif;
 }
 
-header {
-	position: absolute;
-	width: 500px;
-	height: 250px;
-	top: 50%;
-	left: 50%;
-	margin-top: -125px;
-	margin-left: -250px;
-	text-align: center;
+.container,
+#preview,
+#navigation {
+	outline: 2px solid blue;
+	display: flex;
 }
 
-header h1 {
-	font-size: 60px;
-	font-weight: 100;
-	margin: 0;
-	padding: 0;
+.container {
+	flex: 1;
+	flex-direction: row;
+}
+
+#navigation {
+	flex-direction: column;
+	min-width: 200px;
+}
+
+#preview {
+	flex: 1;
+	flex-direction: column;
+	overflow: auto;
+}
+
+#preview .entry {
+	white-space: pre-line;
 }
