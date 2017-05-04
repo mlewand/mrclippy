@@ -1,11 +1,15 @@
 'use strict';
 
-const TextViewer = require( './Viewer/Text' );
+const TextViewer = require( './Viewer/Text' ),
+	HTMLRenderViewer = require( './Viewer/Html/Render' );
 
 class MainWindowController {
-	constructor() {
+	constructor( app ) {
+		this.app = app;
+
 		this.viewers = {
-			text: new TextViewer()
+			text: new TextViewer(),
+			html: new HTMLRenderViewer()
 		};
 	}
 
@@ -16,11 +20,18 @@ class MainWindowController {
 	 * @param {string} previewType Type to be previewed.
 	 * @memberOf MainWindowController
 	 */
-	previewItem( item, previewType ) {
-		let prev = document.querySelector( '#preview' );
+	previewItem( item, previewType, viewerName ) {
+		let prev = document.querySelector( '#preview #render' ),
+			viewer = this.viewers.text;
+
+		if ( viewerName && this.viewers[ viewerName ] ) {
+			viewer = this.viewers[ viewerName ];
+		}
+
+		this.app.previews.update( this.viewers, item, previewType );
 
 		prev.innerHTML = '';
-		this.viewers.text.display( item, previewType, prev );
+		viewer.display( item, previewType, prev );
 	}
 }
 
