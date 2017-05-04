@@ -16,7 +16,7 @@ class App {
 
 	main() {
 
-		this.snapshots.on( 'selected', item => this.controller.previewItem( item ) )
+		this.snapshots.on( 'selected', item => this.controller.previewItem( item, item.getTypes().next().value ) )
 
 		const ClipboardSnapshot = require( './ClipboardSnapshot' );
 

@@ -1,32 +1,27 @@
-( function() {
-	"use strict";
+'use strict';
 
-	class MainWindowController {
-		/**
-		 * Shows a detailed view for given `item`.
-		 *
-		 * @param {ClipboardSnapshot} item
-		 * @param {string} [previewType] Type to be previewed.
-		 * @memberOf MainWindowController
-		 */
-		previewItem( item, previewType ) {
-			let prev = document.querySelector( '#preview' );
+const TextViewer = require( './Viewer/Text' );
 
-			// Nothing better than mixing view and logic for PoC purpose :D
-			let types = Array.from( item.getTypes() ),
-				content = '';
-
-			for ( let type of types ) {
-				if ( previewType && type !== previewType ) {
-					continue;
-				}
-
-				content += `\n<div><h2>${type}</h2><div class="entry">${item.getValueAsHtml( type )}</div></div>`;
-			}
-
-			prev.innerHTML = content;
-		}
+class MainWindowController {
+	constructor() {
+		this.viewers = {
+			text: new TextViewer()
+		};
 	}
 
-	module.exports = MainWindowController;
-} )();
+	/**
+	 * Shows a detailed view for given `item`.
+	 *
+	 * @param {ClipboardSnapshot} item
+	 * @param {string} previewType Type to be previewed.
+	 * @memberOf MainWindowController
+	 */
+	previewItem( item, previewType ) {
+		let prev = document.querySelector( '#preview' );
+
+		prev.innerHTML = '';
+		this.viewers.text.display( item, previewType, prev );
+	}
+}
+
+module.exports = MainWindowController;
