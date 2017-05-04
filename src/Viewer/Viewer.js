@@ -17,7 +17,7 @@ class Viewer {
 	 * @param {string} type
 	 * @returns {boolean}
 	 */
-	handles( item ) {
+	handles( type ) {
 		return false;
 	}
 

@@ -15,7 +15,7 @@ class Text extends Viewer {
 	 * @param {string} type
 	 * @returns {boolean}
 	 */
-	handles( item ) {
+	handles( type ) {
 		// For now let's assume that it handles everything.
 		return true;
 	}
