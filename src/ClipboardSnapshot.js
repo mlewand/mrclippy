@@ -10,10 +10,7 @@
 			let types = clipboard.availableFormats();
 
 			this._content = new Map( types.map( type => {
-				let textType = type.toLowerCase().search( /text|html format/ ) !== -1,
-					val = textType ? clipboard.readText( type ) : String( clipboard.read( type ) );
-
-				return [ type, val ]
+				return [ type, clipboard.read( type ) ]
 			 } ) );
 		}
 
