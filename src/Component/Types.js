@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 const Component = require( './Component' );
 
@@ -27,7 +27,7 @@ class Types extends Component {
 		ret.href = '#';
 		ret.classList.add( 'item' );
 		ret.innerText = type || 'Unknown type';
-		ret.addEventListener( 'click', evt => {
+		ret.addEventListener( 'click', () => {
 			this.controller.previewItem( item, type );
 		} );
 

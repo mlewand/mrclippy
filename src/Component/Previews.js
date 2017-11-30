@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 const Component = require( './Component' );
 
@@ -29,7 +29,7 @@ class Previews extends Component {
 		let ret = document.createElement( 'a' );
 		ret.href = '#';
 		ret.innerText = viewer.label;
-		ret.addEventListener( 'click', evt => {
+		ret.addEventListener( 'click', () => {
 			this.controller.previewItem( item, type, viewerName );
 		} );
 

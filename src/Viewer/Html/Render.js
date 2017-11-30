@@ -49,9 +49,8 @@ class Text extends Viewer {
 
 		if ( headerEnd ) {
 			return html.substr( headerEnd.index + headerEnd[ 0 ].length );
-		} else {
-			return html;
 		}
+		return html;
 	}
 }
 

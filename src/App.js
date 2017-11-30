@@ -24,7 +24,7 @@ class App {
 			if ( firstType ) {
 				this.controller.previewItem( item, firstType );
 			}
-		} )
+		} );
 
 		// By default capture current clipboard snapshot, and select it.
 		this.snapshots.select( this.captureSnapshot() );
@@ -36,7 +36,7 @@ class App {
 	 * @returns {ClipboardSnapshot}
 	 */
 	captureSnapshot() {
-		let initialSnapshot = new ClipboardSnapshot()
+		let initialSnapshot = new ClipboardSnapshot();
 
 		this.snapshots.add( initialSnapshot );
 

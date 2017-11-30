@@ -1,8 +1,7 @@
 ( function() {
-	"use strict";
+	'use strict';
 
-	const electron = require( 'electron' ),
-		clipboard = require( './clipboard' ),
+	const clipboard = require( './clipboard' ),
 		entities = require( 'entities' );
 
 	class ClipboardSnapshot {
@@ -10,8 +9,8 @@
 			let types = clipboard.availableFormats();
 
 			this._content = new Map( types.map( type => {
-				return [ type, clipboard.read( type ) ]
-			 } ) );
+				return [ type, clipboard.read( type ) ];
+			} ) );
 		}
 
 		getTypes() {

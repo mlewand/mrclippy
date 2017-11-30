@@ -15,7 +15,7 @@ class Hex extends Viewer {
 	 * @param {string} type
 	 * @returns {boolean}
 	 */
-	handles( type ) {
+	handles() {
 		// For now let's assume that it handles everything.
 		return true;
 	}

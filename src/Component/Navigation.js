@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 const Component = require( './Component' );
 
@@ -19,7 +19,7 @@ class Navigation extends Component {
 		ret.href = '#';
 		ret.classList.add( 'item' );
 		ret.innerHTML = 'This is an example item';
-		ret.addEventListener( 'click', evt => {
+		ret.addEventListener( 'click', () => {
 			this.snapshots.select( item );
 		} );
 		return ret;

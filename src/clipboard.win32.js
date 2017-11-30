@@ -20,7 +20,6 @@ module.exports = Object.assign( {}, base, {
 	 * @returns {string}
 	 */
 	readText: function( type ) {
-
 		let encoding = null;
 
 		if ( [ 'CF_UNICODETEXT', 'CF_TEXT' ].includes( type ) == false ) {

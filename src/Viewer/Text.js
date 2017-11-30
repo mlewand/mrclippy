@@ -1,7 +1,6 @@
 'use strict';
 
 const Viewer = require( './Viewer' ),
-	entities = require( 'entities' ),
 	iconv = require( 'iconv-lite' );
 
 class Text extends Viewer {
@@ -16,7 +15,7 @@ class Text extends Viewer {
 	 * @param {string} type
 	 * @returns {boolean}
 	 */
-	handles( type ) {
+	handles() {
 		// For now let's assume that it handles everything.
 		return true;
 	}
