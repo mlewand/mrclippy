@@ -1,7 +1,8 @@
 'use strict';
 
 const TextViewer = require( './Viewer/Text' ),
-	HTMLRenderViewer = require( './Viewer/Html/Render' );
+	HTMLRenderViewer = require( './Viewer/Html/Render' ),
+	HexViewer = require( './Viewer/Hex' );
 
 class MainWindowController {
 	constructor( app ) {
@@ -9,7 +10,8 @@ class MainWindowController {
 
 		this.viewers = {
 			text: new TextViewer(),
-			html: new HTMLRenderViewer()
+			html: new HTMLRenderViewer(),
+			hex: new HexViewer()
 		};
 	}
 
