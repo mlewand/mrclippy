@@ -1,5 +1,5 @@
 ( function() {
-	"use strict";
+	'use strict';
 
 	const electron = require( 'electron' );
 	const app = electron.app;
@@ -19,7 +19,7 @@
 	}
 
 	function dumpClipboard() {
-		const { clipboard } = require( 'electron' )
+		const { clipboard } = require( 'electron' );
 		console.log( 'supported types: ', clipboard.availableFormats() );
 	}
 
@@ -56,5 +56,4 @@
 	app.on( 'ready', () => {
 		mainWindow = createMainWindow();
 	} );
-
 } )();
