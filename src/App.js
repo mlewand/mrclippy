@@ -4,6 +4,7 @@ const Navigation = require( './Component/Navigation' ),
 	Types = require( './Component/Types' ),
 	Previews = require( './Component/Previews' ),
 	MainWindowController = require( './MainWindowController' ),
+	ClipboardSnapshot = require( './ClipboardSnapshot' ),
 	SnapshotList = require( './SnapshotsList' );
 
 class App {
@@ -17,17 +18,29 @@ class App {
 	}
 
 	main() {
+		this.snapshots.on( 'selected', item => {
+			let firstType = item.getTypes().next().value;
 
-		// this.snapshots.on( 'selected', item => this.controller.previewItem( item, item.getTypes().next().value ) )
-		this.snapshots.on( 'selected', item => this.controller.previewItem( item, 'HTML Format', 'html' ) )
+			if ( firstType ) {
+				this.controller.previewItem( item, firstType );
+			}
+		} )
 
-		const ClipboardSnapshot = require( './ClipboardSnapshot' );
+		// By default capture current clipboard snapshot, and select it.
+		this.snapshots.select( this.captureSnapshot() );
+	}
 
+	/**
+	 * Creates a snapshot, adds it to the list and returns it.
+	 *
+	 * @returns {ClipboardSnapshot}
+	 */
+	captureSnapshot() {
 		let initialSnapshot = new ClipboardSnapshot()
 
-		// By default add a current clipboard snapshot, and select it.
 		this.snapshots.add( initialSnapshot );
-		this.snapshots.select( initialSnapshot );
+
+		return initialSnapshot;
 	}
 }
 
