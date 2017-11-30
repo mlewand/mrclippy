@@ -2,7 +2,9 @@
 
 const TextViewer = require( './Viewer/Text' ),
 	HTMLRenderViewer = require( './Viewer/Html/Render' ),
-	HexViewer = require( './Viewer/Hex' );
+	HexViewer = require( './Viewer/Hex' ),
+	Bitmap = require( './Viewer/Image/Bitmap' ),
+	Png = require( './Viewer/Image/Png' );
 
 class MainWindowController {
 	constructor( app ) {
@@ -14,7 +16,9 @@ class MainWindowController {
 		this.viewers = {
 			text: new TextViewer(),
 			html: new HTMLRenderViewer(),
-			hex: new HexViewer()
+			hex: new HexViewer(),
+			bitmap: new Bitmap(),
+			png: new Png()
 		};
 	}
 
