@@ -26,7 +26,32 @@ class Text extends Viewer {
 	 * @param {HTMLElement} element A wrapper element where the content preview have to be rendered.
 	 */
 	display( item, type, element ) {
-		element.innerHTML = item.getValue( type );
+		let html = item.getValue( type );
+
+		// For Windows, the display value needs to be further sanitized.
+		if ( process.platform == 'win32' ) {
+			html = this._stripWindowsMeta( html );
+		}
+
+		element.innerHTML = html;
+	}
+
+	/**
+	 * Removes Windows-specific meta tags added to the HTML Format, like StartHTML/SourceURL headers etc.
+	 *
+	 * @param {bytes} html
+	 * @returns {string}
+	 */
+	_stripWindowsMeta( html ) {
+		html = String( html );
+
+		let headerEnd = html.match( /^(EndFragment:.+?\r?\n(SourceURL:.+?\r?\n)?)/m );
+
+		if ( headerEnd ) {
+			return html.substr( headerEnd.index + headerEnd[ 0 ].length );
+		} else {
+			return html;
+		}
 	}
 }
 

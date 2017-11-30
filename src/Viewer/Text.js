@@ -1,7 +1,8 @@
 'use strict';
 
 const Viewer = require( './Viewer' ),
-	entities = require( 'entities' );
+	entities = require( 'entities' ),
+	iconv = require( 'iconv-lite' );
 
 class Text extends Viewer {
 	constructor() {
@@ -28,7 +29,16 @@ class Text extends Viewer {
 	 * @param {HTMLElement} element A wrapper element where the content preview have to be rendered.
 	 */
 	display( item, type, element ) {
-		element.innerText = item.getValue( type );
+		let bytes = item.getValue( type ),
+			string = ( process.platform == 'win32' && type === 'CF_UNICODETEXT' ) ?
+				iconv.decode( bytes, 'utf-16le' ) : String( bytes );
+
+		if ( string[ string.length - 1 ] === '\0' ) {
+			// Windows always adds NULL byte char at the end.
+			string = string.slice( 0, -1 );
+		}
+
+		element.innerText = string;
 	}
 }
 
