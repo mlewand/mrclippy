@@ -17,7 +17,7 @@ class Viewer {
 	 * @param {string} type
 	 * @returns {boolean}
 	 */
-	handles( type ) {
+	handles( _type ) {
 		return false;
 	}
 
@@ -28,7 +28,7 @@ class Viewer {
 	 * @param {string} type
 	 * @param {HTMLElement} element A wrapper element where the content preview have to be rendered.
 	 */
-	display( item, type, element ) {
+	display( _item, _type, _element ) {
 	}
 }
 
