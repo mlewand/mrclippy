@@ -1,11 +1,11 @@
 "use strict";
 
-const Comopnent = require( './Component' );
+const Component = require( './Component' );
 
 /**
  * Types component, displaying a list of clipboard formats.
  */
-class Types extends Comopnent {
+class Types extends Component {
 	constructor( controller, snapshots ) {
 		super( controller, 'types' );
 

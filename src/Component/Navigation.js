@@ -1,8 +1,8 @@
 "use strict";
 
-const Comopnent = require( './Component' );
+const Component = require( './Component' );
 
-class Navigation extends Comopnent {
+class Navigation extends Component {
 	constructor( controller, snapshots ) {
 		super( controller, 'navigation' );
 		this.snapshots = snapshots;

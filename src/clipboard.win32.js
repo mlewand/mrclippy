@@ -5,9 +5,20 @@ const base = require( './clipboard.base' ),
 
 module.exports = Object.assign( {}, base, {
 	availableFormats: () => winClipboard.getFormats(),
+
+	/**
+	 * Reads `type` value from current OS clipboard.
+	 *
+	 * @param {string} type
+	 * @returns {UInt8Array}
+	 */
 	read: function( type ) {
 		return winClipboard.getData( type );
 	},
+
+	/**
+	 * @returns {string}
+	 */
 	readText: function( type ) {
 
 		let encoding = null;

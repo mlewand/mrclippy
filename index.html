@@ -14,33 +14,18 @@
 		<div class="container">
 			<div id="navigation"></div>
 			<div id="types"></div>
-			<div id="preview"></div>
+			<div id="preview">
+				<div id="previewTypes"></div>
+				<div id="render"></div>
+			</div>
 		</div>
 		<footer></footer>
 	</body>
 
 	<script>
-	const Navigation = require( './src/Component/Navigation' ),
-		Types = require('./src/Component/Types.js' )
-		MainWindowController = require( './src/MainWindowController' ),
-		SnapshotList = require( './src/SnapshotsList' );
-
-	window.controller = new MainWindowController();
-
-	const snapshots = new SnapshotList();
-
-	snapshots.on( 'selected', item => window.controller.previewItem( item ) )
-
-	let nav = new Navigation( window.controller, snapshots ),
-		types = new Types( window.controller, snapshots );
-
-	const ClipboardSnapshot = require( './src/ClipboardSnapshot' );
-
-	let initialSnapshot = new ClipboardSnapshot()
-
-	// By default add a current clipboard snapshot, and select it.
-	snapshots.add( initialSnapshot );
-	snapshots.select( initialSnapshot );
+	const App = require( './src/App.js' );
+	let app = new App();
+	app.main();
 	</script>
 
 </html>

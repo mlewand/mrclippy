@@ -1,32 +1,44 @@
-( function() {
-	"use strict";
+'use strict';
 
-	class MainWindowController {
+const TextViewer = require( './Viewer/Text' ),
+	HTMLRenderViewer = require( './Viewer/Html/Render' ),
+	HexViewer = require( './Viewer/Hex' );
+
+class MainWindowController {
+	constructor( app ) {
+		this.app = app;
+
 		/**
-		 * Shows a detailed view for given `item`.
-		 *
-		 * @param {ClipboardSnapshot} item
-		 * @param {string} [previewType] Type to be previewed.
-		 * @memberOf MainWindowController
+		 * @property {Object.<string, Viewer>} viewers a dictionary of available content viewers.
 		 */
-		previewItem( item, previewType ) {
-			let prev = document.querySelector( '#preview' );
-
-			// Nothing better than mixing view and logic for PoC purpose :D
-			let types = Array.from( item.getTypes() ),
-				content = `<p>${types.length} in total</p>`;
-
-			for ( let type of types ) {
-				if ( previewType && type !== previewType ) {
-					continue;
-				}
-
-				content += `\n<div><h2>${type}</h2><div class="entry">${item.getValueAsHtml( type )}</div></div>`;
-			}
-
-			prev.innerHTML = content;
-		}
+		this.viewers = {
+			text: new TextViewer(),
+			html: new HTMLRenderViewer(),
+			hex: new HexViewer()
+		};
 	}
 
-	module.exports = MainWindowController;
-} )();
+	/**
+	 * Shows a detailed view for given `item`.
+	 *
+	 * @param {ClipboardSnapshot} item
+	 * @param {string} previewType Type to be previewed.
+	 * @param {string} [viewerName] Preferred viewer name, based on {@link #viewers}.
+	 * @memberOf MainWindowController
+	 */
+	previewItem( item, previewType, viewerName ) {
+		let prev = document.querySelector( '#preview #render' ),
+			viewer = this.viewers.text;
+
+		if ( viewerName && this.viewers[ viewerName ] ) {
+			viewer = this.viewers[ viewerName ];
+		}
+
+		this.app.previews.update( this.viewers, item, previewType );
+
+		prev.innerHTML = '';
+		viewer.display( item, previewType, prev );
+	}
+}
+
+module.exports = MainWindowController;

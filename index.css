@@ -34,9 +34,20 @@ body {
 #preview {
 	flex: 1;
 	flex-direction: column;
+}
+
+#previewTypes {
+	flex: 1;
+	max-height: 30px;
+	background: red;
+}
+
+#render {
+	flex: 1;
+	flex-direction: column;
 	overflow: auto;
 }
 
-#preview .entry {
+#render .entry {
 	white-space: pre-line;
 }
