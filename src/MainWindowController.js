@@ -8,6 +8,9 @@ class MainWindowController {
 	constructor( app ) {
 		this.app = app;
 
+		/**
+		 * @property {Object.<string, Viewer>} viewers a dictionary of available content viewers.
+		 */
 		this.viewers = {
 			text: new TextViewer(),
 			html: new HTMLRenderViewer(),
@@ -20,6 +23,7 @@ class MainWindowController {
 	 *
 	 * @param {ClipboardSnapshot} item
 	 * @param {string} previewType Type to be previewed.
+	 * @param {string} [viewerName] Preferred viewer name, based on {@link #viewers}.
 	 * @memberOf MainWindowController
 	 */
 	previewItem( item, previewType, viewerName ) {
