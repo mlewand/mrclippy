@@ -17,7 +17,7 @@ class Navigation extends Component {
 	getNavigationFor( item ) {
 		let ret = document.createElement( 'button' );
 		ret.classList = 'item list-group-item list-group-item-action btn-sm';
-		ret.innerHTML = 'This is an example item';
+		ret.innerHTML = item.getLabel();
 		ret.addEventListener( 'click', () => {
 			this.snapshots.select( item );
 
