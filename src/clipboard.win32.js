@@ -17,6 +17,7 @@ module.exports = Object.assign( {}, base, {
 	},
 
 	/**
+	 * @type {string} [type='CF_UNICODETEXT'] Clipboard type to be read as text.
 	 * @returns {string}
 	 */
 	readText: function( type ) {

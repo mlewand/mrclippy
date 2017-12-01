@@ -1,7 +1,8 @@
 ( function() {
 	'use strict';
 
-	const clipboard = require( './clipboard' ),
+	const LABEL_MAX_LENGTH = 50,
+		clipboard = require( './clipboard' ),
 		entities = require( 'entities' );
 
 	class ClipboardSnapshot {
@@ -11,6 +12,12 @@
 			this._content = new Map( types.map( type => {
 				return [ type, clipboard.read( type ) ];
 			} ) );
+
+			let textValue = clipboard.readText().trim();
+
+			if ( textValue.length ) {
+				this.label = textValue.substr( 0, LABEL_MAX_LENGTH ) + ( textValue.length > LABEL_MAX_LENGTH ? '…' : '' );
+			}
 		}
 
 		getTypes() {
@@ -36,9 +43,11 @@
 		}
 
 		getLabel() {
-			return 'ClipboardSnapshot label';
+			return this.label;
 		}
 	}
+
+	ClipboardSnapshot.prototype.label = 'Unnamed Snapshot';
 
 	module.exports = ClipboardSnapshot;
 } )();
