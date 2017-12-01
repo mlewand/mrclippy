@@ -33,7 +33,29 @@ class Text extends Viewer {
 			html = this._stripWindowsMeta( html );
 		}
 
-		element.innerHTML = html;
+		this._displaySandboxPreview( html, element );
+	}
+
+	/**
+	 * Renders `html` in a sanboxed iframe.
+	 *
+	 * @param {string} html
+	 * @param {HTMLElement} element Parent element that the `<iframe>` should get appended to.
+	 */
+	_displaySandboxPreview( html, element ) {
+		let sandboxIframe = element.ownerDocument.createElement( 'iframe' );
+
+		sandboxIframe.classList = 'preview-iframe';
+		sandboxIframe.sandbox = '';
+		sandboxIframe.style.display = 'none';
+		element.appendChild( sandboxIframe );
+
+		sandboxIframe.contentDocument.body.innerHTML = html;
+
+		sandboxIframe.style.display = null;
+
+		// Adjust iframe height to the content.
+		sandboxIframe.style.height = sandboxIframe.contentWindow.document.body.scrollHeight + 'px';
 	}
 
 	/**
