@@ -26,8 +26,8 @@ class Previews extends Component {
 	}
 
 	getTabFor( item, type, viewer, viewerName ) {
-		let ret = document.createElement( 'a' );
-		ret.href = '#';
+		let ret = document.createElement( 'button' );
+		ret.classList = 'btn btn-primary';
 		ret.innerText = viewer.label;
 		ret.addEventListener( 'click', () => {
 			this.controller.previewItem( item, type, viewerName );

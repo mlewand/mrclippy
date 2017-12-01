@@ -8,24 +8,46 @@
 	</head>
 
 	<body>
-		<header>
-			<h1>MrClippy 🦄</h1>
+		<header class="container-fluid">
+			<div class="row no-gutters align-items-center">
+				<div class="col no-gutters">
+					<h1 class="col no-gutters">MrClippy 🦄</h1>
+				</div>
+				<div class="col-1">
+					<button class="btn btn-success btn-xl" onclick="window.app.captureSnapshot()">Capture a snapshot</button>
+				</div>
+			</div>
 		</header>
-		<div class="container">
-			<div id="navigation"></div>
-			<div id="types"></div>
-			<div id="preview">
-				<div id="previewTypes"></div>
-				<div id="render"></div>
+		<div class="container-fluid">
+			<div class="row">
+				<div id="navigation" class="col list-group"></div>
+				<div id="types" class="col list-group"></div>
+				<div id="preview" class="col">
+					<div id="previewTypes" class="row"></div>
+					<div id="render" class="row"></div>
+				</div>
 			</div>
 		</div>
 		<footer></footer>
 	</body>
 
 	<script>
-	const App = require( './src/App.js' );
-	let app = new App();
-	app.main();
+		( function() {
+			// Add Bootstrap.
+			let bootstrapStyle = document.createElement( 'link' );
+			bootstrapStyle.setAttribute( 'href', 'node_modules/bootstrap/' + require( 'bootstrap/package.json' ).style );
+			bootstrapStyle.setAttribute( 'rel', 'stylesheet' );
+
+			document.head.appendChild( bootstrapStyle );
+
+			// Init app.
+			const App = require( './src/App.js' );
+
+			let app = new App();
+			app.main();
+			window.app = app;
+		} )();
+
 	</script>
 
 </html>

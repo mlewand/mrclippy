@@ -15,12 +15,18 @@ class Navigation extends Component {
 	}
 
 	getNavigationFor( item ) {
-		let ret = document.createElement( 'a' );
-		ret.href = '#';
-		ret.classList.add( 'item' );
+		let ret = document.createElement( 'button' );
+		ret.classList = 'item list-group-item list-group-item-action btn-sm';
 		ret.innerHTML = 'This is an example item';
 		ret.addEventListener( 'click', () => {
 			this.snapshots.select( item );
+
+			let curActiveType = this._elem.querySelector( '.active' );
+			if ( curActiveType ) {
+				curActiveType.classList.remove( 'active' );
+			}
+
+			ret.classList.add( 'active' );
 		} );
 		return ret;
 	}
