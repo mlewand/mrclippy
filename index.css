@@ -24,3 +24,9 @@ html .btn {
 	max-width: 170px;
 	padding-right: 0.5rem;
 }
+
+.preview-iframe {
+	display: block;
+	width: 100%;
+	border: 0px;
+}
