@@ -23,12 +23,19 @@ class Types extends Component {
 	}
 
 	getOptionFor( item, type ) {
-		let ret = document.createElement( 'a' );
-		ret.href = '#';
-		ret.classList.add( 'item' );
+		let ret = document.createElement( 'button' );
+		ret.type = 'button';
+		ret.classList = 'item list-group-item list-group-item-action btn-sm';
 		ret.innerText = type || 'Unknown type';
 		ret.addEventListener( 'click', () => {
 			this.controller.previewItem( item, type );
+
+			let curActiveType = this._elem.querySelector( '.active' );
+			if ( curActiveType ) {
+				curActiveType.classList.remove( 'active' );
+			}
+
+			ret.classList.add( 'active' );
 		} );
 
 		return ret;

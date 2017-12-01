@@ -42,7 +42,7 @@ class Hex extends Viewer {
 			}
 		}
 
-		html = '<pre style="font-size: 1.4em"><code>' + html + '</pre></code>';
+		html = '<pre class="hex-wrapper"><code>' + html + '</pre></code>';
 
 		element.innerHTML = html;
 	}
