@@ -5,7 +5,10 @@ const Navigation = require( './Component/Navigation' ),
 	Previews = require( './Component/Previews' ),
 	MainWindowController = require( './MainWindowController' ),
 	ClipboardSnapshot = require( './ClipboardSnapshot' ),
-	SnapshotList = require( './SnapshotsList' );
+	SnapshotList = require( './SnapshotsList' ),
+	path = require( 'path' ),
+	snapshotStorer = require( './SnapshotStorer' ),
+	electron = require( 'electron' );
 
 class App {
 	constructor() {
@@ -28,6 +31,27 @@ class App {
 
 		// By default capture current clipboard snapshot, and select it.
 		this.snapshots.select( this.captureSnapshot() );
+	}
+
+	/**
+	 * Saves current snapshot.
+	 *
+	 * @param {BrowserWindow} [window] Browser window that should be associated with the window.
+	 */
+	saveSnapshot( window ) {
+		let selectedSnapshot = this.snapshots.getSelected(),
+			defaultPath = path.join( __dirname, '..', snapshotStorer.proposeFileName( selectedSnapshot ) );
+
+		electron.remote.dialog.showSaveDialog( window, {
+			title: 'Save Clipboard Snapshot',
+			defaultPath: defaultPath
+		}, function( fileName ) {
+			snapshotStorer.save( selectedSnapshot, fileName );
+		} );
+	}
+
+	openSnapshot() {
+		console.log( 'Not implemented yet' );
 	}
 
 	/**

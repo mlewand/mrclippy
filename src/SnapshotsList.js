@@ -32,6 +32,15 @@ class SnapshotsList extends EventEmitter {
 		this._selected = item;
 		this.emit( 'selected', item, prevSelected );
 	}
+
+	/**
+	 * Returns currently selected clipboard snapshot or `null` if none is selected.
+	 *
+	 * @returns {ClipboardSnapshot/null}
+	 */
+	getSelected() {
+		return this._selected || null;
+	}
 }
 
 module.exports = SnapshotsList;
