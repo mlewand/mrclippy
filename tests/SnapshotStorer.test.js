@@ -43,7 +43,7 @@ describe( 'SnapshotStorer', () => {
 				} ),
 				ret;
 
-			SnapshotStorer.save( snapshotMock );
+			return expect( SnapshotStorer.save( snapshotMock ) ).to.eventually.be.fulfilled;
 		} );
 	} );
 

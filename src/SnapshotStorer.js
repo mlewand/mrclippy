@@ -4,7 +4,6 @@ const sanitize = require( 'sanitize-filename' ),
 	path = require( 'path' ),
 	fs = require( 'fs' ),
 	fsExtra = require( 'fs-extra' ),
-	// nodeZip = require( 'node-zip' );
 	jszip = require( 'jszip' );
 
 /**
@@ -23,22 +22,13 @@ module.exports = {
 			filePath = path.join( __dirname, '..', this.proposeFileName( snapshot ) );
 		}
 
-		console.log( `Saving to "${filePath}".` );
+		let zip = new jszip();
+		zip.file( 'content.json', JSON.stringify( content ) );
 
-		var output = fs.createWriteStream( filePath ),
-			archive = this._archiver( 'zip', {
-				zlib: {
-					level: 9
-				}
+		return zip.generateAsync( { type: 'nodebuffer' } )
+			.then( function( content ) {
+				return fsExtra.writeFile( filePath, content );
 			} );
-
-		archive.pipe( output );
-
-		archive.append( JSON.stringify( content ), {
-			name: 'content.json'
-		} );
-
-		archive.finalize();
 	},
 
 	load( path ) {
@@ -47,8 +37,10 @@ module.exports = {
 
 	_loadFromJson( path ) {
 		return fsExtra.readFile( path )
-			.then( blob => jszip( blob ) )
-			.then( zip => zip.file( 'content.json' ).asText() )
+			.then( blob => {
+				return jszip.loadAsync( blob )
+					.then( zip => zip.file( 'content.json' ).async( 'string' ) );
+			 } )
 			.then( jsonContent => JSON.parse( jsonContent ) )
 			.then( parsed => {
 				let data = parsed.data;
@@ -84,8 +76,6 @@ module.exports = {
 			replacement: '-'
 		} ) + '.clip';
 	},
-
-	_archiver: require( 'archiver' ),
 
 	_getSnapshotObject( snapshot ) {
 		let data = {};

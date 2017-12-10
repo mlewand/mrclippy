@@ -29,7 +29,6 @@
     "electron"
   ],
   "dependencies": {
-    "archiver": "^2.1.0",
     "bootstrap": "^4.0.0-beta.2",
     "electron-debug": "^1.4.0",
     "electron-rebuild": "^1.5.7",
