@@ -1,7 +1,11 @@
 const SnapshotStorer = require( '../src/SnapshotStorer' ),
 	ClipboardSnapshotMock = require( './mock/ClipboardSnapshotMock' ),
-	expect = require( 'chai' ).expect,
+	chai = require( 'chai' ),
+	expect = chai.expect,
+	path = require( 'path' ),
 	sinon = require( 'sinon' );
+
+chai.use( require( 'chai-as-promised' ) );
 
 describe( 'SnapshotStorer', () => {
 	function getSnapshotMock( label ) {
@@ -40,6 +44,27 @@ describe( 'SnapshotStorer', () => {
 				ret;
 
 			SnapshotStorer.save( snapshotMock );
+		} );
+	} );
+
+	describe( '_loadFromJson', () => {
+		it( 'works', () => {
+			let ret = SnapshotStorer._loadFromJson( path.join( __dirname, '_fixtures', 'snapshot-mock.clip' ) ),
+				expected = {
+					meta: {
+						os: 'win10',
+						label: 'snapshot-mock',
+						format: '1',
+						appVersion: '0.0.1'
+					},
+					data: {
+						'HTML Format': '123',
+						CF_UNICODETEXT: 'abc',
+						Binary: Buffer.from( [ 64, 64, 64 ] )
+					}
+				};
+
+			return expect( ret ).to.eventually.be.deep.equal( expected );
 		} );
 	} );
 

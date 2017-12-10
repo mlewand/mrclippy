@@ -36,7 +36,7 @@ class App {
 	/**
 	 * Saves current snapshot.
 	 *
-	 * @param {BrowserWindow} [window] Browser window that should be associated with the window.
+	 * @param {BrowserWindow} [window=undefined] Browser window that should be associated with the dialog.
 	 */
 	saveSnapshot( window ) {
 		let selectedSnapshot = this.snapshots.getSelected(),
@@ -47,11 +47,27 @@ class App {
 			defaultPath: defaultPath
 		}, function( fileName ) {
 			snapshotStorer.save( selectedSnapshot, fileName );
+
+			return false;
 		} );
 	}
 
-	openSnapshot() {
-		console.log( 'Not implemented yet' );
+	/**
+	 * Opens a file open dialog, where user can specify stored snapshot to be loaded.
+	 *
+	 * @param {BrowserWindow} [window=undefined] Browser window that should be associated with the dialog.
+	 */
+	openSnapshot( window ) {
+		electron.remote.dialog.showOpenDialog( window, {
+			filters: [
+				{ name: 'MrClippy Snapshots', extensions: [ 'clip' ] },
+				{ name: 'All Files', extensions: [ '*' ] }
+			]
+		}, function( fileNames ) {
+			if ( fileNames && fileNames[ 0 ] ) {
+				snapshotStorer.load( fileNames[ 0 ] );
+			}
+		} );
 	}
 
 	/**

@@ -2,7 +2,10 @@
 
 const sanitize = require( 'sanitize-filename' ),
 	path = require( 'path' ),
-	fs = require( 'fs' );
+	fs = require( 'fs' ),
+	fsExtra = require( 'fs-extra' ),
+	// nodeZip = require( 'node-zip' );
+	jszip = require( 'jszip' );
 
 /**
  * Exports / imports snapshot to / from a file format.
@@ -38,7 +41,31 @@ module.exports = {
 		archive.finalize();
 	},
 
-	load( path ) {},
+	load( path ) {
+		return this._loadFromJson( path );
+	},
+
+	_loadFromJson( path ) {
+		return fsExtra.readFile( path )
+			.then( blob => jszip( blob ) )
+			.then( zip => zip.file( 'content.json' ).asText() )
+			.then( jsonContent => JSON.parse( jsonContent ) )
+			.then( parsed => {
+				let data = parsed.data;
+
+				for ( let key of Object.keys( data ) ) {
+					if ( data[ key ].type === 'Buffer' ) {
+						if ( Uint8Array ) {
+							data[ key ] = Uint8Array.from( data[ key ].data );
+						} else {
+							data[ key ] = Buffer.from( data[ key ].data );
+						}
+					}
+				}
+
+				return parsed;
+			} );
+	},
 
 	/**
 	 * Returns a proposed file name for given snapshot.
