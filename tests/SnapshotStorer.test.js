@@ -3,7 +3,8 @@ const SnapshotStorer = require( '../src/SnapshotStorer' ),
 	chai = require( 'chai' ),
 	expect = chai.expect,
 	path = require( 'path' ),
-	sinon = require( 'sinon' );
+	sinon = require( 'sinon' ),
+	fsExtra = require( 'fs-extra' );
 
 chai.use( require( 'chai-as-promised' ) );
 
@@ -41,9 +42,10 @@ describe( 'SnapshotStorer', () => {
 					CF_UNICODETEXT: 'abc',
 					Binary: Buffer.from( [ 64, 64, 64 ] )
 				} ),
-				ret;
+				outputDir = path.join( __dirname, '_fixtures', '_output' ),
+				outputPath = path.join( outputDir, 'snapshot-mock.clip' );
 
-			return expect( SnapshotStorer.save( snapshotMock ) ).to.eventually.be.fulfilled;
+			return fsExtra.mkdirp( outputDir ).then( () => expect( SnapshotStorer.save( snapshotMock, outputPath ) ).to.eventually.be.fulfilled );
 		} );
 	} );
 
