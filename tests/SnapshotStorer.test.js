@@ -51,8 +51,7 @@ describe( 'SnapshotStorer', () => {
 
 	describe( '_loadFromJson', () => {
 		it( 'works', () => {
-			let ret = SnapshotStorer._loadFromJson( path.join( __dirname, '_fixtures', 'snapshot-mock.clip' ) ),
-				expected = {
+			let expected = {
 					meta: {
 						os: 'win10',
 						label: 'snapshot-mock',
@@ -66,7 +65,7 @@ describe( 'SnapshotStorer', () => {
 					}
 				};
 
-			return expect( ret ).to.eventually.be.deep.equal( expected );
+			return expect( SnapshotStorer._loadFromJson( path.join( __dirname, '_fixtures', 'snapshot-mock.clip' ) ) ).to.eventually.be.deep.equal( expected );
 		} );
 	} );
 
