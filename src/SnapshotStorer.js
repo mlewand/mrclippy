@@ -1,8 +1,8 @@
 'use strict';
 
-const sanitize = require( 'sanitize-filename' ),
+const ClipboardSnapshot = require( './ClipboardSnapshot' ),
+	sanitize = require( 'sanitize-filename' ),
 	path = require( 'path' ),
-	fs = require( 'fs' ),
 	fsExtra = require( 'fs-extra' ),
 	jszip = require( 'jszip' );
 
@@ -32,7 +32,10 @@ module.exports = {
 	},
 
 	load( path ) {
-		return this._loadFromJson( path );
+		return this._loadFromJson( path )
+			.then( parsedData => {
+				return ClipboardSnapshot.createFromData( parsedData );
+			} );
 	},
 
 	_loadFromJson( path ) {
@@ -40,7 +43,7 @@ module.exports = {
 			.then( blob => {
 				return jszip.loadAsync( blob )
 					.then( zip => zip.file( 'content.json' ).async( 'string' ) );
-			 } )
+			} )
 			.then( jsonContent => JSON.parse( jsonContent ) )
 			.then( parsed => {
 				let data = parsed.data;

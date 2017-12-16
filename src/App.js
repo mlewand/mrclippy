@@ -8,6 +8,7 @@ const Navigation = require( './Component/Navigation' ),
 	SnapshotList = require( './SnapshotsList' ),
 	path = require( 'path' ),
 	snapshotStorer = require( './SnapshotStorer' ),
+	notification = require( './notification' ),
 	electron = require( 'electron' );
 
 class App {
@@ -60,12 +61,16 @@ class App {
 	openSnapshot( window ) {
 		electron.remote.dialog.showOpenDialog( window, {
 			filters: [
-				{ name: 'MrClippy Snapshots', extensions: [ 'clip' ] },
-				{ name: 'All Files', extensions: [ '*' ] }
+				{ name: 'MrClippy Snapshots',
+					extensions: [ 'clip' ] },
+				{ name: 'All Files',
+					extensions: [ '*' ] }
 			]
-		}, function( fileNames ) {
+		}, fileNames => {
 			if ( fileNames && fileNames[ 0 ] ) {
-				snapshotStorer.load( fileNames[ 0 ] );
+				snapshotStorer.load( fileNames[ 0 ] )
+					.then( snapshot => this.snapshots.add( snapshot ) )
+					['catch']( e => notification.error( 'Snapshot couldnt be loaded', `MrClippy was unable to open "${fileNames[ 0 ]}" file.`, e ) );
 			}
 		} );
 	}
@@ -76,7 +81,7 @@ class App {
 	 * @returns {ClipboardSnapshot}
 	 */
 	captureSnapshot() {
-		let initialSnapshot = new ClipboardSnapshot();
+		let initialSnapshot = ClipboardSnapshot.createFromClipboard();
 
 		this.snapshots.add( initialSnapshot );
 

@@ -1,4 +1,5 @@
 const SnapshotStorer = require( '../src/SnapshotStorer' ),
+	ClipboardSnapshot = require( '../src/ClipboardSnapshot' ),
 	ClipboardSnapshotMock = require( './mock/ClipboardSnapshotMock' ),
 	chai = require( 'chai' ),
 	expect = chai.expect,
@@ -52,20 +53,48 @@ describe( 'SnapshotStorer', () => {
 	describe( '_loadFromJson', () => {
 		it( 'works', () => {
 			let expected = {
-					meta: {
-						os: 'win10',
-						label: 'snapshot-mock',
-						format: '1',
-						appVersion: '0.0.1'
-					},
-					data: {
-						'HTML Format': '123',
-						CF_UNICODETEXT: 'abc',
-						Binary: Buffer.from( [ 64, 64, 64 ] )
-					}
-				};
+				meta: {
+					os: 'win10',
+					label: 'snapshot-mock',
+					format: '1',
+					appVersion: '0.0.1'
+				},
+				data: {
+					'HTML Format': '123',
+					CF_UNICODETEXT: 'abc',
+					Binary: Buffer.from( [ 64, 64, 64 ] )
+				}
+			};
 
 			return expect( SnapshotStorer._loadFromJson( path.join( __dirname, '_fixtures', 'snapshot-mock.clip' ) ) ).to.eventually.be.deep.equal( expected );
+		} );
+	} );
+
+	describe( 'load', () => {
+		it( 'works', () => {
+			let expected = {
+				meta: {
+					os: 'win10',
+					label: 'snapshot-mock',
+					format: '1',
+					appVersion: '0.0.1'
+				},
+				data: {
+					'HTML Format': '123',
+					CF_UNICODETEXT: 'abc',
+					Binary: Buffer.from( [ 64, 64, 64 ] )
+				}
+			};
+
+			return SnapshotStorer.load( path.join( __dirname, '_fixtures', 'snapshot-mock.clip' ) )
+				.then( ret => {
+					expect( ret ).to.be.instanceOf( ClipboardSnapshot );
+					expect( ret.getLabel() ).to.be.equal( 'snapshot-mock' );
+
+					expect( ret.getValue( 'HTML Format' ) ).to.be.equal( '123' );
+					expect( ret.getValue( 'CF_UNICODETEXT' ) ).to.be.equal( 'abc' );
+					expect( ret.getValue( 'Binary' ) ).to.be.eql( expected.data.Binary );
+				} );
 		} );
 	} );
 
