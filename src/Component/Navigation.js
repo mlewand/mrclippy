@@ -11,7 +11,7 @@ class Navigation extends Component {
 	}
 
 	addItem( item ) {
-		this._elem.appendChild( this.getNavigationFor( item ) );
+		this._elem.prepend( this.getNavigationFor( item ) );
 	}
 
 	getNavigationFor( item ) {
