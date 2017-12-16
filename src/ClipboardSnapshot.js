@@ -26,12 +26,6 @@
 			return this._content.get( type );
 		}
 
-		// @todo: remove this method, encoding should not be a concern of this type.
-		getValueAsHtml( type ) {
-			// Dummy handling so far.
-			return entities.encodeHTML( this.getValue( type ) );
-		}
-
 		getLabel() {
 			return this.label;
 		}
