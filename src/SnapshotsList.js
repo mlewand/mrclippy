@@ -17,7 +17,7 @@ class SnapshotsList extends EventEmitter {
 	}
 
 	remove( item ) {
-		if ( this._store['delete']( item ) ) {
+		if ( this._store.delete( item ) ) {
 			this.emit( 'removed', item );
 			this.emit( 'changed' );
 		}
@@ -31,6 +31,15 @@ class SnapshotsList extends EventEmitter {
 		let prevSelected = this._selected;
 		this._selected = item;
 		this.emit( 'selected', item, prevSelected );
+	}
+
+	/**
+	 * Returns currently selected clipboard snapshot or `null` if none is selected.
+	 *
+	 * @returns {ClipboardSnapshot/null}
+	 */
+	getSelected() {
+		return this._selected || null;
 	}
 }
 
