@@ -8,6 +8,14 @@ Initially the app is developed on Windows. [Mac](https://github.com/mlewand/mrcl
 
 Contributions are welcome.
 
+## Requirements
+
+* nodejs
+
+Dev version (Windows):
+
+* `npm install --global --production windows-build-tools` - ran as Administrator
+
 ## Running the app
 
 Currently the only way to run it is to use dev version.
