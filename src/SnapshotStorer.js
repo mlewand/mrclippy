@@ -31,30 +31,16 @@ module.exports = {
 			} );
 	},
 
+	/**
+	 * Loads Clipboard snapshot from a given resource.
+	 *
+	 * @param {string} path Clipboard snapshot file to be loaded.
+	 * @returns {Promise.<ClipboardSnapshot>}
+	 */
 	load( path ) {
 		return this._loadFromJson( path )
 			.then( parsedData => {
 				return ClipboardSnapshot.createFromData( parsedData );
-			} );
-	},
-
-	_loadFromJson( path ) {
-		return fsExtra.readFile( path )
-			.then( blob => {
-				return jszip.loadAsync( blob )
-					.then( zip => zip.file( 'content.json' ).async( 'string' ) );
-			} )
-			.then( jsonContent => JSON.parse( jsonContent ) )
-			.then( parsed => {
-				let data = parsed.data;
-
-				for ( let key of Object.keys( data ) ) {
-					if ( data[ key ].type === 'Buffer' ) {
-						data[ key ] = Buffer.from( data[ key ].data );
-					}
-				}
-
-				return parsed;
 			} );
 	},
 
@@ -92,5 +78,25 @@ module.exports = {
 			},
 			data: data
 		};
+	},
+
+	_loadFromJson( path ) {
+		return fsExtra.readFile( path )
+			.then( blob => {
+				return jszip.loadAsync( blob )
+					.then( zip => zip.file( 'content.json' ).async( 'string' ) );
+			} )
+			.then( jsonContent => JSON.parse( jsonContent ) )
+			.then( parsed => {
+				let data = parsed.data;
+
+				for ( let key of Object.keys( data ) ) {
+					if ( data[ key ].type === 'Buffer' ) {
+						data[ key ] = Buffer.from( data[ key ].data );
+					}
+				}
+
+				return parsed;
+			} );
 	}
 };
