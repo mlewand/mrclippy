@@ -50,11 +50,7 @@ module.exports = {
 
 				for ( let key of Object.keys( data ) ) {
 					if ( data[ key ].type === 'Buffer' ) {
-						if ( Uint8Array ) {
-							data[ key ] = Uint8Array.from( data[ key ].data );
-						} else {
-							data[ key ] = Buffer.from( data[ key ].data );
-						}
+						data[ key ] = Buffer.from( data[ key ].data );
 					}
 				}
 
