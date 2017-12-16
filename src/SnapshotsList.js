@@ -17,7 +17,7 @@ class SnapshotsList extends EventEmitter {
 	}
 
 	remove( item ) {
-		if ( this._store['delete']( item ) ) {
+		if ( this._store.delete( item ) ) {
 			this.emit( 'removed', item );
 			this.emit( 'changed' );
 		}

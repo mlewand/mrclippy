@@ -70,7 +70,7 @@ class App {
 			if ( fileNames && fileNames[ 0 ] ) {
 				snapshotStorer.load( fileNames[ 0 ] )
 					.then( snapshot => this.snapshots.add( snapshot ) )
-					['catch']( e => notification.error( 'Snapshot couldnt be loaded', `MrClippy was unable to open "${fileNames[ 0 ]}" file.`, e ) );
+					.catch( e => notification.error( 'Snapshot couldnt be loaded', `MrClippy was unable to open "${fileNames[ 0 ]}" file.`, e ) );
 			}
 		} );
 	}
