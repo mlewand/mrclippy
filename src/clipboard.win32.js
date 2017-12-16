@@ -1,9 +1,8 @@
 'use strict';
 
-const base = require( './clipboard.base' ),
-	winClipboard = require( 'win-clipboard' );
+const winClipboard = require( 'win-clipboard' );
 
-module.exports = Object.assign( {}, base, {
+module.exports = {
 	availableFormats: () => winClipboard.getFormats(),
 
 	/**
@@ -29,4 +28,4 @@ module.exports = Object.assign( {}, base, {
 
 		return winClipboard.getText( type, encoding );
 	}
-} );
+};
