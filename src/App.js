@@ -47,9 +47,9 @@ class App {
 			title: 'Save Clipboard Snapshot',
 			defaultPath: defaultPath
 		}, function( fileName ) {
-			snapshotStorer.save( selectedSnapshot, fileName );
-
-			return false;
+			if ( fileName ) {
+				snapshotStorer.save( selectedSnapshot, fileName );
+			}
 		} );
 	}
 
@@ -65,7 +65,8 @@ class App {
 					extensions: [ 'clip' ] },
 				{ name: 'All Files',
 					extensions: [ '*' ] }
-			]
+			],
+			properties: [ 'openFile' ]
 		}, fileNames => {
 			if ( fileNames && fileNames[ 0 ] ) {
 				snapshotStorer.load( fileNames[ 0 ] )
