@@ -32,7 +32,6 @@
     "bootstrap": "^4.0.0-beta.2",
     "electron-debug": "^1.4.0",
     "electron-rebuild": "^1.5.7",
-    "entities": "^1.1.1",
     "fs-extra": "^4.0.2",
     "iconv-lite": "^0.4.17",
     "jszip": "^3.1.5",

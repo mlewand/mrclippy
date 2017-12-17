@@ -2,8 +2,7 @@
 	'use strict';
 
 	const LABEL_MAX_LENGTH = 50,
-		clipboard = require( './clipboard' ),
-		entities = require( 'entities' );
+		clipboard = require( './clipboard' );
 
 	class ClipboardSnapshot {
 		constructor() {
