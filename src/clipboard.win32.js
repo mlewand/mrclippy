@@ -27,5 +27,19 @@ module.exports = {
 		}
 
 		return winClipboard.getText( type, encoding );
-	}
+	},
+
+	/**
+	 * Writes `data` to a given `format`.
+	 *
+	 * @param {string} format
+	 * @param {Uint8Array} data
+	 */
+	write( format, data ) {
+		// Note that data buffer might be shared (happens when loading clipboard from external file).
+		// @todo: document the case.
+		return winClipboard.setData( data.buffer.slice( data.byteOffset, data.byteOffset + data.byteLength ), format );
+	},
+
+	clear: winClipboard.clear
 };
