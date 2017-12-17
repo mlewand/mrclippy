@@ -1,7 +1,7 @@
 {
   "name": "mrclippy",
   "productName": "MrClippy",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "A simple clipboard editor.",
   "license": "MIT",
   "repository": "mlewand/mrclippy",
