@@ -37,7 +37,6 @@ module.exports = {
 	 */
 	write( format, data ) {
 		// Note that data buffer might be shared (happens when loading clipboard from external file).
-		// @todo: document the case.
 		return winClipboard.setData( data.buffer.slice( data.byteOffset, data.byteOffset + data.byteLength ), format );
 	},
 
