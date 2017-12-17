@@ -77,6 +77,16 @@ class App {
 	}
 
 	/**
+	 * Writes snapshot to the current OS clipboard.
+	 *
+	 * @param {ClipboardSnapshot} clip
+	 */
+	writeSnapshot( clip ) {
+		const clipboard = require( './clipboard' );
+		clipboard.writeSnapshot( clip );
+	}
+
+	/**
 	 * Creates a snapshot, adds it to the list and returns it.
 	 *
 	 * @returns {ClipboardSnapshot}
