@@ -1,13 +1,8 @@
 const SnapshotStorer = require( '../src/SnapshotStorer' ),
 	ClipboardSnapshot = require( '../src/ClipboardSnapshot' ),
 	ClipboardSnapshotMock = require( './mock/ClipboardSnapshotMock' ),
-	chai = require( 'chai' ),
-	expect = chai.expect,
 	path = require( 'path' ),
-	sinon = require( 'sinon' ),
 	fsExtra = require( 'fs-extra' );
-
-chai.use( require( 'chai-as-promised' ) );
 
 describe( 'SnapshotStorer', () => {
 	function getSnapshotMock( label ) {

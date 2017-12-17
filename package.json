@@ -11,8 +11,8 @@
     "url": "github.com/mlewand/mrclippy"
   },
   "scripts": {
-    "test": "./node_modules/.bin/mocha tests --recursive --reporter spec",
-    "test-watch": "./node_modules/.bin/mocha tests --recursive --reporter min --watch --colors",
+    "test": "./node_modules/.bin/mocha tests/**/*.test.js -r tests/common.js --recursive --reporter spec",
+    "test-watch": "./node_modules/.bin/mocha tests/**/*.test.js -r tests/common.js --recursive --reporter min --watch --colors",
     "start": "electron .",
     "build": "electron-packager . --out=dist --asar --overwrite --all",
     "postinstall": "electron-rebuild"
