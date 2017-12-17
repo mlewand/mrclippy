@@ -7,7 +7,8 @@ mock( 'win-clipboard', {
 	},
 	getText: function() {
 		return '';
-	}
+	},
+	clear: function() {}
 } );
 
 const ClipboardSnapshot = require( '../../src/ClipboardSnapshot' ),

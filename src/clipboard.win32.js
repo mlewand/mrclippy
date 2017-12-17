@@ -1,9 +1,8 @@
 'use strict';
 
-const base = require( './clipboard.base' ),
-	winClipboard = require( 'win-clipboard' );
+const winClipboard = require( 'win-clipboard' );
 
-module.exports = Object.assign( {}, base, {
+module.exports = {
 	availableFormats: () => winClipboard.getFormats(),
 
 	/**
@@ -28,5 +27,19 @@ module.exports = Object.assign( {}, base, {
 		}
 
 		return winClipboard.getText( type, encoding );
-	}
-} );
+	},
+
+	/**
+	 * Writes `data` to a given `format`.
+	 *
+	 * @param {string} format
+	 * @param {Uint8Array} data
+	 */
+	write( format, data ) {
+		// Note that data buffer might be shared (happens when loading clipboard from external file, for detailed repro steps
+		// see revision dc64e9e10d09eb45cad4ac407376b4d78d07aa0b description).
+		return winClipboard.setData( data.buffer.slice( data.byteOffset, data.byteOffset + data.byteLength ), format );
+	},
+
+	clear: winClipboard.clear
+};
