@@ -2,7 +2,8 @@ const SnapshotStorer = require( '../src/SnapshotStorer' ),
 	ClipboardSnapshot = require( '../src/ClipboardSnapshot' ),
 	ClipboardSnapshotMock = require( './mock/ClipboardSnapshotMock' ),
 	path = require( 'path' ),
-	fsExtra = require( 'fs-extra' );
+	fsExtra = require( 'fs-extra' ),
+	os = require( 'os' );
 
 describe( 'SnapshotStorer', () => {
 	function getSnapshotMock( label ) {
@@ -49,7 +50,7 @@ describe( 'SnapshotStorer', () => {
 		it( 'works', () => {
 			let expected = {
 				meta: {
-					os: 'win10',
+					os: 'win32',
 					label: 'snapshot-mock',
 					format: '1',
 					appVersion: '0.0.1'
@@ -69,7 +70,7 @@ describe( 'SnapshotStorer', () => {
 		it( 'works', () => {
 			let expected = {
 				meta: {
-					os: 'win10',
+					os: 'win32',
 					label: 'snapshot-mock',
 					format: '1',
 					appVersion: '0.0.1'
@@ -108,7 +109,7 @@ describe( 'SnapshotStorer', () => {
 
 			expect( ret ).to.be.deep.equal( {
 				meta: {
-					os: 'win10',
+					os: 'win32',
 					label: 'custom snapshot label',
 					format: '1',
 					appVersion: '0.0.1'
@@ -118,6 +119,34 @@ describe( 'SnapshotStorer', () => {
 					CF_UNICODETEXT: 'abc',
 					Binary: Buffer.from( [ 64, 64, 64 ] )
 				}
+			} );
+		} );
+
+		describe( 'platform', () => {
+			before( () => {
+				sinon.stub( os, 'platform' ).returns( 'megaOS!' );
+			} );
+
+			after( () => {
+				os.platform.restore();
+			} );
+
+			it( 'Stores OS info', () => {
+				let snapshotMock = new ClipboardSnapshotMock( {
+						Text: 'abc'
+					} ),
+					ret;
+
+				snapshotMock.label = 'custom snapshot label';
+
+				ret = SnapshotStorer._getSnapshotObject( snapshotMock );
+
+				expect( ret.meta ).to.be.deep.equal( {
+					os: 'megaOS!',
+					label: 'custom snapshot label',
+					format: '1',
+					appVersion: '0.0.1'
+				} );
 			} );
 		} );
 	} );
