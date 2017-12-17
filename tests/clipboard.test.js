@@ -1,11 +1,5 @@
 const ClipboardSnapshotMock = require( './mock/ClipboardSnapshotMock' ),
-	clipboard = require( '../src/clipboard' ),
-	chai = require( 'chai' ),
-	expect = chai.expect,
-	sinon = require( 'sinon' );
-
-chai.use( require( 'chai-as-promised' ) );
-chai.use( require( 'sinon-chai' ) );
+	clipboard = require( '../src/clipboard' );
 
 describe( 'clipboard base module', () => {
 	describe( 'writeSnasphot', () => {

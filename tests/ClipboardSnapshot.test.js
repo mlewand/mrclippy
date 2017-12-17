@@ -1,11 +1,7 @@
 // This will mock  win-clipboard.
 require( './mock/ClipboardSnapshotMock' );
 
-const ClipboardSnapshot = require( '../src/ClipboardSnapshot' ),
-	chai = require( 'chai' ),
-	expect = chai.expect;
-
-chai.use( require( 'chai-as-promised' ) );
+const ClipboardSnapshot = require( '../src/ClipboardSnapshot' );
 
 describe( 'ClipboardSnapshot', () => {
 	describe( 'createFromData', () => {
