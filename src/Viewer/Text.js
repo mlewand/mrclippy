@@ -29,10 +29,11 @@ class Text extends Viewer {
 	 */
 	display( item, type, element ) {
 		let bytes = item.getValue( type ),
-			string = ( process.platform == 'win32' && type === 'CF_UNICODETEXT' ) ?
+			isWinClipboard = item.env.name == 'win32',
+			string = ( isWinClipboard && type === 'CF_UNICODETEXT' ) ?
 				iconv.decode( bytes, 'utf-16le' ) : String( bytes );
 
-		if ( string[ string.length - 1 ] === '\0' ) {
+		if ( isWinClipboard && string[ string.length - 1 ] === '\0' ) {
 			// Windows always adds NULL byte char at the end.
 			string = string.slice( 0, -1 );
 		}
