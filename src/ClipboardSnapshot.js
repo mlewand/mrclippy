@@ -7,7 +7,6 @@
 
 	class ClipboardSnapshot {
 		/**
-		 *
 		 * @param {OsEnvironment} [env=null] Environment for which the snapshot was taken. If skipped it will be
 		 * detected automatically.
 		 */

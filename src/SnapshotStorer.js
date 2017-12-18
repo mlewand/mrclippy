@@ -3,7 +3,6 @@
 const ClipboardSnapshot = require( './ClipboardSnapshot' ),
 	sanitize = require( 'sanitize-filename' ),
 	path = require( 'path' ),
-	os = require( 'os' ),
 	fsExtra = require( 'fs-extra' ),
 	jszip = require( 'jszip' );
 
