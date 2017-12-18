@@ -72,7 +72,10 @@ module.exports = {
 
 		return {
 			meta: {
-				os: os.platform(),
+				os: {
+					platform: snapshot.env.name,
+					version: snapshot.env.release
+				},
 				label: snapshot.getLabel(),
 				format: '1',
 				appVersion: '0.0.1'

@@ -109,7 +109,10 @@ describe( 'SnapshotStorer', () => {
 
 			expect( ret ).to.be.deep.equal( {
 				meta: {
-					os: 'win32',
+					os: {
+						platform: 'win32',
+						version: '10.0.16299'
+					},
 					label: 'custom snapshot label',
 					format: '1',
 					appVersion: '0.0.1'
@@ -123,12 +126,15 @@ describe( 'SnapshotStorer', () => {
 		} );
 
 		describe( 'platform', () => {
+			let mocks = sinon.sandbox.create();
+
 			before( () => {
-				sinon.stub( os, 'platform' ).returns( 'megaOS!' );
+				mocks.stub( os, 'platform' ).returns( 'megaOS!' );
+				mocks.stub( os, 'release' ).returns( '200.10.11' );
 			} );
 
 			after( () => {
-				os.platform.restore();
+				mocks.restore();
 			} );
 
 			it( 'Stores OS info', () => {
@@ -142,7 +148,10 @@ describe( 'SnapshotStorer', () => {
 				ret = SnapshotStorer._getSnapshotObject( snapshotMock );
 
 				expect( ret.meta ).to.be.deep.equal( {
-					os: 'megaOS!',
+					os: {
+						platform: 'megaOS!',
+						version: '200.10.11'
+					},
 					label: 'custom snapshot label',
 					format: '1',
 					appVersion: '0.0.1'

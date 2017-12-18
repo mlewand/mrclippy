@@ -2,11 +2,23 @@
 	'use strict';
 
 	const LABEL_MAX_LENGTH = 50,
-		clipboard = require( './clipboard' );
+		clipboard = require( './clipboard' ),
+		OsEnvironment = require( './OsEnvironment' );
 
 	class ClipboardSnapshot {
-		constructor() {
+		/**
+		 *
+		 * @param {OsEnvironment} [env=null] Environment for which the snapshot was taken. If skipped it will be
+		 * detected automatically.
+		 */
+		constructor( env ) {
 			this._content = new Map();
+			/**
+			 * Environment info for the platform that was used to create this snapshot.
+			 *
+			 * @property {OsEnvironment}
+			 */
+			this.env = env instanceof OsEnvironment ? env : OsEnvironment.createForCurrent();
 		}
 
 		getTypes() {
@@ -59,7 +71,9 @@
 		 * @returns {ClipboardSnapshot}
 		 */
 		static createFromData( data ) {
-			let ret = new ClipboardSnapshot();
+			let osMeta = data.meta.os,
+				env = osMeta ? new OsEnvironment( osMeta.platform, osMeta.version ) : null,
+				ret = new ClipboardSnapshot( env );
 
 			ret._content = new Map( Object.keys( data.data ).map( type => {
 				return [ type, data.data[ type ] ];
