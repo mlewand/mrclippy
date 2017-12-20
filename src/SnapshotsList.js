@@ -57,7 +57,10 @@ class SnapshotsList extends EventEmitter {
 
 	async remove( item ) {
 		this._store.delete( item );
-		await this._storage.removeItem( item._storageKey );
+
+		if ( this._isStorageEnabled() ) {
+			await this._storage.removeItem( item._storageKey );
+		}
 
 		this.emit( 'removed', item );
 		this.emit( 'changed' );
@@ -86,6 +89,10 @@ class SnapshotsList extends EventEmitter {
 	 * Loads snapshot list from it's associated local storage.
 	 */
 	async loadFromStorage() {
+		if ( !this._isStorageEnabled() ) {
+			return;
+		}
+
 		let storage = this._storage,
 			keys = await storage.keys();
 

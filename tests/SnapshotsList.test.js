@@ -84,8 +84,18 @@ describe( 'SnapshotsList', () => {
 			expect( storageMock.setItem ).not.to.be.called;
 		} );
 
-		it( 'Does not modify storage on remove', () => {} );
+		it( 'Does not modify storage on remove', async() => {
+			await listMock.add( mockSnapshot );
+			await listMock.remove( mockSnapshot );
 
-		it( 'Does not load entries in loadFromStorage', () => {} );
+			expect( storageMock.removeItem ).not.to.be.called;
+		} );
+
+		it( 'Does not load entries in loadFromStorage', async() => {
+			await listMock.loadFromStorage();
+
+			expect( storageMock.keys ).not.to.be.called;
+			expect( storageMock.getItem ).not.to.be.called;
+		} );
 	} );
 } );
