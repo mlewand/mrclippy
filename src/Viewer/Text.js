@@ -1,7 +1,8 @@
 'use strict';
 
 const Viewer = require( './Viewer' ),
-	iconv = require( 'iconv-lite' );
+	utf8decoder = new TextDecoder( 'utf8' ),
+	utf16decoder = new TextDecoder( 'utf-16le' );
 
 class Text extends Viewer {
 	constructor() {
@@ -30,8 +31,8 @@ class Text extends Viewer {
 	display( item, type, element ) {
 		let bytes = item.getValue( type ),
 			isWinClipboard = item.env.name == 'win32',
-			string = ( isWinClipboard && type === 'CF_UNICODETEXT' ) ?
-				iconv.decode( bytes, 'utf-16le' ) : String( bytes );
+			decoder = ( isWinClipboard && type === 'CF_UNICODETEXT' ) ? utf16decoder : utf8decoder,
+			string = decoder.decode( bytes );
 
 		if ( isWinClipboard && string[ string.length - 1 ] === '\0' ) {
 			// Windows always adds NULL byte char at the end.
