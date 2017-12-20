@@ -8,20 +8,25 @@ const Navigation = require( './Component/Navigation' ),
 	SnapshotList = require( './SnapshotsList' ),
 	path = require( 'path' ),
 	snapshotStorer = require( './SnapshotStorer' ),
+	Storage = require( './Storage' ),
 	notification = require( './notification' ),
 	electron = require( 'electron' );
 
 class App {
 	constructor() {
 		this.controller = new MainWindowController( this );
-		this.snapshots = new SnapshotList();
+		this.storage = new Storage();
+
+		this.snapshots = new SnapshotList( this.storage.snapshots );
 
 		this.nav = new Navigation( this.controller, this.snapshots );
 		this.types = new Types( this.controller, this.snapshots );
 		this.previews = new Previews( this.controller, this.snapshots );
 	}
 
-	main() {
+	async main() {
+		await this.snapshots.loadFromStorage();
+
 		this.snapshots.on( 'selected', item => {
 			let firstType = item.getTypes().next().value;
 
@@ -60,11 +65,14 @@ class App {
 	 */
 	openSnapshot( window ) {
 		electron.remote.dialog.showOpenDialog( window, {
-			filters: [
-				{ name: 'MrClippy Snapshots',
-					extensions: [ 'clip' ] },
-				{ name: 'All Files',
-					extensions: [ '*' ] }
+			filters: [ {
+				name: 'MrClippy Snapshots',
+				extensions: [ 'clip' ]
+			},
+			{
+				name: 'All Files',
+				extensions: [ '*' ]
+			}
 			],
 			properties: [ 'openFile' ]
 		}, fileNames => {

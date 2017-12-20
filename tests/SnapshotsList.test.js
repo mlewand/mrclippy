@@ -63,7 +63,7 @@ describe( 'SnapshotsList', () => {
 
 		after( () => {
 			mockSnapshot._storageKey = initialStorageKey;
-		});
+		} );
 
 		it( 'Removes the item from storage', async() => {
 			await listMock.remove( mockSnapshot );
