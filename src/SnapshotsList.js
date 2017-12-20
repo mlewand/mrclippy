@@ -5,8 +5,17 @@ const ClipboardSnapshot = require( './ClipboardSnapshot' ),
 	EventEmitter = require( 'events' );
 
 class SnapshotsList extends EventEmitter {
-	constructor( storage ) {
+	/**
+	 * @param {App} app Application instance owning the list.
+	 */
+	constructor( app ) {
 		super();
+
+		/**
+		 * @private
+		 * @property {App} _app Owning app.
+		 */
+		this._app = app;
 
 		/**
 		 * @private
@@ -27,18 +36,20 @@ class SnapshotsList extends EventEmitter {
 		 * @private
 		 * @property {Object} _storage LocalForage db instance.
 		 */
-		this._storage = storage;
+		this._storage = app.storage.snapshots;
 	}
 
 	async add( item ) {
 		this._store.add( item );
 
-		if ( typeof item._storageKey === 'undefined' ) {
-			let keys = await this._storage.keys();
-			item._storageKey = String( keys.length );
-		}
+		if ( this._isStorageEnabled() ) {
+			if ( typeof item._storageKey === 'undefined' ) {
+				let keys = await this._storage.keys();
+				item._storageKey = String( keys.length );
+			}
 
-		await this._storage.setItem( item._storageKey, SnapshotStorer._getSnapshotObject( item ) );
+			await this._storage.setItem( item._storageKey, SnapshotStorer._getSnapshotObject( item ) );
+		}
 
 		this.emit( 'added', item );
 		this.emit( 'changed' );
@@ -83,6 +94,15 @@ class SnapshotsList extends EventEmitter {
 			loadedSnapshot._storageKey = curKey;
 			this.add( loadedSnapshot );
 		}
+	}
+
+	/**
+	 * Tells whether persistent storage is enabled.
+	 *
+	 * @returns {Boolean}
+	 */
+	_isStorageEnabled() {
+		return this._app.config.persistentStorage !== false;
 	}
 }
 

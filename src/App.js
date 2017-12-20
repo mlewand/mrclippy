@@ -16,8 +16,9 @@ class App {
 	constructor() {
 		this.controller = new MainWindowController( this );
 		this.storage = new Storage();
+		this.config = require( '../config.json' );
 
-		this.snapshots = new SnapshotList( this.storage.snapshots );
+		this.snapshots = new SnapshotList( this );
 
 		this.nav = new Navigation( this.controller, this.snapshots );
 		this.types = new Types( this.controller, this.snapshots );

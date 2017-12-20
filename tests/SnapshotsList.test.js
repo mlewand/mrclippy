@@ -1,18 +1,11 @@
 const ClipboardSnapshotMock = require( './mock/ClipboardSnapshotMock' ),
+	AppMock = require( './mock/AppMock' ),
 	SnapshotsList = require( '../src/SnapshotsList' );
 
 describe( 'SnapshotsList', () => {
-	let storageMock = {
-			keys() {
-				return 3;
-			},
-			setItem() {},
-			getItem() {
-				return 55;
-			},
-			removeItem() {}
-		},
-		listMock = new SnapshotsList( storageMock ),
+	let appMock = new AppMock(),
+		listMock = new SnapshotsList( appMock ),
+		storageMock = appMock.storage.snapshots,
 		sandbox = sinon.createSandbox();
 
 	const mockSnapshot = new ClipboardSnapshotMock( {
@@ -77,5 +70,22 @@ describe( 'SnapshotsList', () => {
 			expect( listMock.emit.firstCall ).to.be.calledWithExactly( 'removed', mockSnapshot );
 			expect( listMock.emit ).to.be.calledWithExactly( 'changed' );
 		} );
+	} );
+
+	describe( 'config.persistentStorage = false', () => {
+		let initialConfigValue = appMock.config.persistentStorage;
+
+		before( () => appMock.config.persistentStorage = false );
+		after( () => appMock.config.persistentStorage = initialConfigValue );
+
+		it( 'Does not create storage entry with add', async() => {
+			await listMock.add( mockSnapshot );
+
+			expect( storageMock.setItem ).not.to.be.called;
+		} );
+
+		it( 'Does not modify storage on remove', () => {} );
+
+		it( 'Does not load entries in loadFromStorage', () => {} );
 	} );
 } );
