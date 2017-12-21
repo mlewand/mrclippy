@@ -56,6 +56,10 @@ class SnapshotsList extends EventEmitter {
 	}
 
 	async remove( item ) {
+		if ( item === this._selected ) {
+			this.select( null );
+		}
+
 		this._store.delete( item );
 
 		if ( this._isStorageEnabled() ) {

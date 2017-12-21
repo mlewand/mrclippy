@@ -70,6 +70,15 @@ describe( 'SnapshotsList', () => {
 			expect( listMock.emit.firstCall ).to.be.calledWithExactly( 'removed', mockSnapshot );
 			expect( listMock.emit ).to.be.calledWithExactly( 'changed' );
 		} );
+
+		it( 'Unselects removed element if needed', async() => {
+			listMock.select( mockSnapshot );
+
+			await listMock.remove( mockSnapshot );
+
+			expect( listMock.getSelected() ).to.be.null;
+			expect( listMock.emit ).to.be.calledWithExactly( 'selected', null, mockSnapshot );
+		} );
 	} );
 
 	describe( 'clear()', () => {
