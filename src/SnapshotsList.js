@@ -40,6 +40,11 @@ class SnapshotsList extends EventEmitter {
 	}
 
 	async add( item ) {
+		if ( this._app.config.maxSnapshots > 0 && this._store.size >= this._app.config.maxSnapshots ) {
+			// In case we exceeded the limit, pick last one and remove it before adding a new snapshot.
+			this.remove( this.getLast() );
+		}
+
 		this._store.add( item );
 
 		if ( this._isStorageEnabled() ) {
@@ -112,6 +117,13 @@ class SnapshotsList extends EventEmitter {
 			loadedSnapshot._storageKey = curKey;
 			this.add( loadedSnapshot );
 		}
+	}
+
+	/**
+	 * @returns {ClipboardSnapshot/undefined} Returns the last snapshot.
+	 */
+	getLast() {
+		return this._store.values().next().value;
 	}
 
 	/**

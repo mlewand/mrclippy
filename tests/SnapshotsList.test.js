@@ -129,4 +129,24 @@ describe( 'SnapshotsList', () => {
 			expect( storageMock.getItem ).not.to.be.called;
 		} );
 	} );
+
+	describe( 'config.maxSnapshots = 3', () => {
+		let initialConfigValue = appMock.config.maxSnapshots;
+
+		before( () => appMock.config.maxSnapshots = 3 );
+		after( () => appMock.config.maxSnapshots = initialConfigValue );
+
+		it( 'Does not create storage entry with add', async() => {
+			let thirdItem = new ClipboardSnapshotMock( {} );
+
+			await listMock.add( mockSnapshot );
+			await listMock.add( new ClipboardSnapshotMock( {} ) );
+			await listMock.add( thirdItem );
+			await listMock.add( new ClipboardSnapshotMock( {} ) );
+			await listMock.add( new ClipboardSnapshotMock( {} ) );
+
+			expect( listMock._store ).to.have.property( 'size', 3 );
+			expect( listMock.getLast() ).to.be.equal( thirdItem );
+		} );
+	} );
 } );
