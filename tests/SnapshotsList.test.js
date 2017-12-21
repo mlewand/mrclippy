@@ -72,6 +72,28 @@ describe( 'SnapshotsList', () => {
 		} );
 	} );
 
+	describe( 'clear()', () => {
+		let removeStub;
+
+		before( () => removeStub = sinon.spy( listMock, 'remove' ) );
+
+		after( () => removeStub.restore() );
+
+		it( 'works', async() => {
+			let snapshot2 = new ClipboardSnapshotMock( {} );
+
+			await listMock.add( mockSnapshot );
+			await listMock.add( snapshot2 );
+
+			await listMock.clear();
+
+			expect( listMock.remove ).to.be.calledWithExactly( mockSnapshot );
+			expect( listMock.remove ).to.be.calledWithExactly( snapshot2 );
+
+			expect( listMock._store ).is.empty;
+		} );
+	} );
+
 	describe( 'config.persistentStorage = false', () => {
 		let initialConfigValue = appMock.config.persistentStorage;
 

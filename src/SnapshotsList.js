@@ -66,6 +66,13 @@ class SnapshotsList extends EventEmitter {
 		this.emit( 'changed' );
 	}
 
+	/**
+	 * Clears snapshot list.
+	 */
+	async clear() {
+		this._store.forEach( snapshot => this.remove( snapshot ) );
+	}
+
 	select( item ) {
 		if ( item === this._selected ) {
 			return;
