@@ -1,6 +1,7 @@
 'use strict';
 
-const Viewer = require( '../Viewer' );
+const Viewer = require( '../Viewer' ),
+	utf8decoder = new TextDecoder( 'utf8' );
 
 class Text extends Viewer {
 	constructor() {
@@ -26,7 +27,7 @@ class Text extends Viewer {
 	 * @param {HTMLElement} element A wrapper element where the content preview have to be rendered.
 	 */
 	display( item, type, element ) {
-		let html = item.getValue( type );
+		let html = utf8decoder.decode( item.getValue( type ) );
 
 		// For Windows, the display value needs to be further sanitized.
 		if ( process.platform == 'win32' ) {

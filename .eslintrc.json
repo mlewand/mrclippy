@@ -1,8 +1,18 @@
 {
 	"extends": "eslint-config-mlewand-node",
+	"parserOptions": {
+		"ecmaVersion": 8
+	},
 	"rules": {
 		"strict": 0,
-		"no-unused-vars": [  "error", { "argsIgnorePattern": "^_" } ]
+		"no-unused-vars": [  "error", { "argsIgnorePattern": "^_" } ],
+		"dot-notation": [
+			2,
+			{
+				"allowKeywords": true
+			}
+		],
+		"eol-last": "off"
 	},
 	"env": {
 		"node": true,

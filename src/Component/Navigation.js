@@ -7,11 +7,27 @@ class Navigation extends Component {
 		super( controller, 'navigation' );
 		this.snapshots = snapshots;
 
+		this._listItems = new Map();
+
 		snapshots.on( 'added', this.addItem.bind( this ) );
+		snapshots.on( 'removed', this.removeItem.bind( this ) );
 	}
 
 	addItem( item ) {
-		this._elem.prepend( this.getNavigationFor( item ) );
+		let listItem = this.getNavigationFor( item );
+
+		this._elem.prepend( listItem );
+
+		this._listItems.set( item, listItem );
+	}
+
+	removeItem( item ) {
+		let listItem = this._listItems.get( item );
+
+		if ( listItem ) {
+			listItem.remove();
+			this._listItems.delete( item );
+		}
 	}
 
 	getNavigationFor( item ) {

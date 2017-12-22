@@ -17,8 +17,10 @@ class Types extends Component {
 	snapshotSelected( item ) {
 		this._clear();
 
-		for ( let type of item.getTypes() ) {
-			this._elem.appendChild( this.getOptionFor( item, type ) );
+		if ( item ) {
+			for ( let type of item.getTypes() ) {
+				this._elem.appendChild( this.getOptionFor( item, type ) );
+			}
 		}
 	}
 
