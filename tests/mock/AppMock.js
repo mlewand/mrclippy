@@ -10,6 +10,9 @@ class AppMock {
 				setItem: () => null,
 				getItem: () => null,
 				removeItem: () => null
+			},
+			requestNewSnasphotKey: async function() {
+				return Promise.resolve( '0' );
 			}
 		};
 	}
