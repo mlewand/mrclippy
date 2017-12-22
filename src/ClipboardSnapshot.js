@@ -3,7 +3,8 @@
 
 	const LABEL_MAX_LENGTH = 50,
 		clipboard = require( './clipboard' ),
-		OsEnvironment = require( './OsEnvironment' );
+		OsEnvironment = require( './OsEnvironment' ),
+		crc32 = require( 'crc-32' );
 
 	class ClipboardSnapshot {
 		/**
@@ -48,7 +49,7 @@
 		get _hashes() {
 			if ( !this._hashesCached ) {
 				this._hashesCached = new Map(
-					Array.from( this._content.keys() ).map( key => [ key, null ] )
+					Array.from( this._content.keys() ).map( key => [ key, crc32.buf( this._content.get( key ) ) ] )
 				);
 			}
 

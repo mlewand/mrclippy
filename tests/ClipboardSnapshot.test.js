@@ -68,9 +68,21 @@ describe( 'ClipboardSnapshot', () => {
 		it( 'Returns correct hashes', () => {
 			let hashes = originalSnapshot._hashes;
 			expect( hashes ).to.be.deep.equal( new Map( [
-				[ 'aa', null ],
-				[ 'bb', null ]
+				[ 'aa', -1334104836 ],
+				[ 'bb', -1334104836 ]
 			] ) );
+		} );
+
+		it( 'Tells different snapshots', () => {
+			expect( snapshots.original._hashes ).not.to.be.deep.equal( snapshots.different._hashes );
+		} );
+
+		it( 'Tells partially different snapshots', () => {
+			expect( snapshots.original._hashes ).not.to.be.deep.equal( snapshots.partial._hashes );
+		} );
+
+		it( 'Tells equal snapshots', () => {
+			expect( snapshots.original._hashes ).to.be.deep.equal( snapshots.equal._hashes );
 		} );
 	} );
 } );
