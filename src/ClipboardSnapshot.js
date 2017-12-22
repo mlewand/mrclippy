@@ -47,7 +47,9 @@
 		 */
 		get _hashes() {
 			if ( !this._hashesCached ) {
-				this._hashesCached = new Map();
+				this._hashesCached = new Map(
+					Array.from( this._content.keys() ).map( key => [ key, null ] )
+				);
 			}
 
 			return this._hashesCached;

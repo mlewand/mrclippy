@@ -64,5 +64,13 @@ describe( 'ClipboardSnapshot', () => {
 			expect( originalSnapshot._hashesCached, 'hash after fetching' ).not.to.be.undefined;
 			expect( hashes ).to.be.instanceOf( Map );
 		} );
+
+		it( 'Returns correct hashes', () => {
+			let hashes = originalSnapshot._hashes;
+			expect( hashes ).to.be.deep.equal( new Map( [
+				[ 'aa', null ],
+				[ 'bb', null ]
+			] ) );
+		} );
 	} );
 } );
