@@ -1,7 +1,5 @@
-// This will mock  win-clipboard.
-require( './mock/ClipboardSnapshotMock' );
-
-const ClipboardSnapshot = require( '../src/ClipboardSnapshot' );
+const ClipboardSnapshotMock = require( './mock/ClipboardSnapshotMock' ),
+	ClipboardSnapshot = require( '../src/ClipboardSnapshot' );
 
 describe( 'ClipboardSnapshot', () => {
 	describe( 'createFromData', () => {
@@ -34,6 +32,37 @@ describe( 'ClipboardSnapshot', () => {
 
 			expect( env.name ).to.be.equal( 'fancy-os' );
 			expect( env.release ).to.be.equal( '5.0.6' );
+		} );
+	} );
+
+	describe( 'Hashing', () => {
+		let snapshots = {
+				original: new ClipboardSnapshotMock( {
+					aa: Buffer.from( [ 64, 65 ] ),
+					bb: Buffer.from( [ 64, 65 ] )
+				} ),
+				// Snapshot with equal content to original.
+				equal: new ClipboardSnapshotMock( {
+					aa: Buffer.from( [ 64, 65 ] ),
+					bb: Buffer.from( [ 64, 65 ] )
+				} ),
+				// One property differs from original.
+				different: new ClipboardSnapshotMock( {
+					aa: Buffer.from( [ 64, 65 ] ),
+					bb: Buffer.from( [ 68, 72 ] )
+				} ),
+				// Partially equal to original.
+				partial: new ClipboardSnapshotMock( {
+					aa: Buffer.from( [ 64, 65 ] )
+				} )
+			},
+			originalSnapshot = snapshots.original;
+
+		it( 'Sets hashes only on demand', () => {
+			expect( originalSnapshot._hashesCached, 'hash before fetching' ).to.be.undefined;
+			let hashes = originalSnapshot._hashes;
+			expect( originalSnapshot._hashesCached, 'hash after fetching' ).not.to.be.undefined;
+			expect( hashes ).to.be.instanceOf( Map );
 		} );
 	} );
 } );

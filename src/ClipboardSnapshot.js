@@ -41,6 +41,23 @@
 		}
 
 		/**
+		 * A map of hashes based on {@link #_content} used for quick snapshot comparison.
+		 *
+		 * @property {Map.<string,string>} _hashes
+		 */
+		get _hashes() {
+			if ( !this._hashesCached ) {
+				this._hashesCached = new Map();
+			}
+
+			return this._hashesCached;
+		}
+
+		set _hashes( val ) {
+			this._hashesCached = val;
+		}
+
+		/**
 		 * Creates a new clipboard snapshot from **current** clipboard.
 		 *
 		 * @returns {ClipboardSnapshot}
