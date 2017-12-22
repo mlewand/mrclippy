@@ -20,7 +20,7 @@ class Storage {
 		let keys = await this.snapshots.keys();
 		for ( let key of keys ) {
 			// Replaces \0 chars due to #27.
-			console.log( `${key} "${( await this.storage.snapshots.getItem( key ) ).meta.label.replace( /\x00/g, '' )}"` );
+			console.log( `${key} "${( await this.snapshots.getItem( key ) ).meta.label.replace( /\x00/g, '' )}"` );
 		}
 	}
 }

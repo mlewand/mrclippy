@@ -29,6 +29,11 @@ class App {
 		await this.snapshots.loadFromStorage();
 
 		this.snapshots.on( 'selected', item => {
+			if ( !item ) {
+				// #42.
+				return;
+			}
+
 			let firstType = item.getTypes().next().value;
 
 			if ( firstType ) {
