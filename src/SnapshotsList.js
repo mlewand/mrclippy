@@ -42,15 +42,14 @@ class SnapshotsList extends EventEmitter {
 	async add( item ) {
 		if ( this._app.config.maxSnapshots > 0 && this._store.size >= this._app.config.maxSnapshots ) {
 			// In case we exceeded the limit, pick last one and remove it before adding a new snapshot.
-			this.remove( this.getLast() );
+			await this.remove( this.getLast() );
 		}
 
 		this._store.add( item );
 
 		if ( this._isStorageEnabled() ) {
 			if ( typeof item._storageKey === 'undefined' ) {
-				let keys = await this._storage.keys();
-				item._storageKey = String( keys.length );
+				item._storageKey = await this._app.storage.requestNewSnasphotKey();
 			}
 
 			await this._storage.setItem( item._storageKey, SnapshotStorer._getSnapshotObject( item ) );

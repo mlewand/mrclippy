@@ -23,6 +23,22 @@ class Storage {
 			console.log( `${key} "${( await this.snapshots.getItem( key ) ).meta.label.replace( /\x00/g, '' )}"` );
 		}
 	}
+
+	/**
+	 * Note that the returned key will not be reserved.
+	 *
+	 * @returns {Promise.<string>}
+	 */
+	async requestNewSnasphotKey() {
+		let keys = await this.snapshots.keys(),
+			ret = 0; // Default value for empty array.
+
+		if ( keys.length ) {
+			ret = String( parseInt( keys[ keys.length - 1 ] ) + 1 );
+		}
+
+		return String( ret );
+	}
 }
 
 module.exports = Storage;
