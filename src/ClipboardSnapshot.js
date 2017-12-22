@@ -42,6 +42,20 @@
 		}
 
 		/**
+		 * Compares two clipboard snapshot.
+		 *
+		 * Note that compare is based on content data only, thus labels/meta data are skipped.
+		 *
+		 * @param {ClipboardSnapshot} other
+		 * @returns {Boolean} `true` if both snapshots are equal.
+		 */
+		equals( other ) {
+			const deepEql = require( 'deep-eql' );
+
+			return deepEql( this._hashes, other._hashes );
+		}
+
+		/**
 		 * A map of hashes based on {@link #_content} used for quick snapshot comparison.
 		 *
 		 * @property {Map.<string,string>} _hashes

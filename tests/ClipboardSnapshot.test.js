@@ -35,6 +35,46 @@ describe( 'ClipboardSnapshot', () => {
 		} );
 	} );
 
+	describe( 'equals()', () => {
+		// @todo extract to a common place. Could be simply a before() method.
+		let snapshots = {
+			original: new ClipboardSnapshotMock( {
+				aa: Buffer.from( [ 64, 65 ] ),
+				bb: Buffer.from( [ 64, 65 ] )
+			} ),
+			// Snapshot with equal content to original.
+			equal: new ClipboardSnapshotMock( {
+				aa: Buffer.from( [ 64, 65 ] ),
+				bb: Buffer.from( [ 64, 65 ] )
+			} ),
+			// One property differs from original.
+			different: new ClipboardSnapshotMock( {
+				aa: Buffer.from( [ 64, 65 ] ),
+				bb: Buffer.from( [ 68, 72 ] )
+			} ),
+			// Partially equal to original.
+			partial: new ClipboardSnapshotMock( {
+				aa: Buffer.from( [ 64, 65 ] )
+			} )
+		};
+
+		it( 'Tells different snapshots', () => {
+			expect( snapshots.original.equals( snapshots.different ) ).to.be.false;
+		} );
+
+		it( 'Tells partially different snapshots', () => {
+			expect( snapshots.original.equals( snapshots.partial ) ).to.be.false;
+		} );
+
+		it( 'Tells equal snapshots', () => {
+			expect( snapshots.original.equals( snapshots.equal ) ).to.be.true;
+		} );
+
+		it( 'Tells same snapshots', () => {
+			expect( snapshots.original.equals( snapshots.original ) ).to.be.true;
+		} );
+	} );
+
 	describe( 'Hashing', () => {
 		let snapshots = {
 				original: new ClipboardSnapshotMock( {
