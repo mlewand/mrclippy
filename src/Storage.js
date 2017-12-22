@@ -29,7 +29,7 @@ class Storage {
 	 *
 	 * @returns {Promise.<string>}
 	 */
-	async requestNewSnasphotKey() {
+	async requestNewSnapshotKey() {
 		let keys = await this.snapshots.keys(),
 			ret = 0; // Default value for empty array.
 

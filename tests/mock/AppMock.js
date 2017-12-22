@@ -11,7 +11,7 @@ class AppMock {
 				getItem: () => null,
 				removeItem: () => null
 			},
-			requestNewSnasphotKey: async function() {
+			requestNewSnapshotKey: async function() {
 				return Promise.resolve( '0' );
 			}
 		};
