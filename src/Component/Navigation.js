@@ -11,6 +11,7 @@ class Navigation extends Component {
 
 		snapshots.on( 'added', this.addItem.bind( this ) );
 		snapshots.on( 'removed', this.removeItem.bind( this ) );
+		snapshots.on( 'selected', this.itemSelected.bind( this ) );
 	}
 
 	addItem( item ) {
@@ -30,19 +31,25 @@ class Navigation extends Component {
 		}
 	}
 
+	itemSelected( item, prevSelected ) {
+		let prevItem = prevSelected && this._listItems.get( prevSelected ),
+			curItem = item && this._listItems.get( item );
+
+		if ( prevItem ) {
+			prevItem.classList.remove( 'active' );
+		}
+
+		if ( curItem ) {
+			curItem.classList.add( 'active' );
+		}
+	}
+
 	getNavigationFor( item ) {
 		let ret = document.createElement( 'button' );
 		ret.classList = 'item list-group-item list-group-item-action btn-sm';
 		ret.innerHTML = item.getLabel();
 		ret.addEventListener( 'click', () => {
 			this.snapshots.select( item );
-
-			let curActiveType = this._elem.querySelector( '.active' );
-			if ( curActiveType ) {
-				curActiveType.classList.remove( 'active' );
-			}
-
-			ret.classList.add( 'active' );
 		} );
 		return ret;
 	}
