@@ -125,6 +125,16 @@ class SnapshotsList extends EventEmitter {
 		return this._store.values().next().value;
 	}
 
+	getFirst() {
+		let lastVal;
+
+		for ( let val of this._store.values() ) {
+			lastVal = val;
+		}
+
+		return lastVal;
+	}
+
 	/**
 	 * Tells whether persistent storage is enabled.
 	 *

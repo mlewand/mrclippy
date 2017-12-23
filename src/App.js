@@ -42,7 +42,7 @@ class App {
 		} );
 
 		// By default capture current clipboard snapshot, and select it.
-		this.snapshots.select( this.captureSnapshot() );
+		await this.captureSnapshot();
 	}
 
 	/**
@@ -105,12 +105,19 @@ class App {
 	 *
 	 * @returns {ClipboardSnapshot}
 	 */
-	captureSnapshot() {
-		let initialSnapshot = ClipboardSnapshot.createFromClipboard();
+	async captureSnapshot() {
+		let newSnapshot = ClipboardSnapshot.createFromClipboard(),
+			last = this.snapshots.getFirst();
 
-		this.snapshots.add( initialSnapshot );
+		if ( last && last.equals( newSnapshot ) && confirm( 'Dude, you already have a snapshot like that, would you like to reuse it?' ) ) {
+			this.snapshots.select( last );
+			return last;
+		}
 
-		return initialSnapshot;
+		await this.snapshots.add( newSnapshot );
+		this.snapshots.select( newSnapshot );
+
+		return newSnapshot;
 	}
 }
 
