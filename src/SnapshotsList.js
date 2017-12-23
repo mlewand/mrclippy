@@ -47,10 +47,9 @@ class SnapshotsList extends EventEmitter {
 
 		this._store.add( item );
 
-		if ( this._isStorageEnabled() ) {
-			if ( typeof item._storageKey === 'undefined' ) {
-				item._storageKey = await this._app.storage.requestNewSnapshotKey();
-			}
+		if ( this._isStorageEnabled() && typeof item._storageKey === 'undefined' ) {
+			// Item is not yet added to the persistent storage.
+			item._storageKey = await this._app.storage.requestNewSnapshotKey();
 
 			await this._storage.setItem( item._storageKey, SnapshotStorer._getSnapshotObject( item ) );
 		}
