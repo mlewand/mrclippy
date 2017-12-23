@@ -114,7 +114,7 @@ class SnapshotsList extends EventEmitter {
 		for ( let curKey of keys ) {
 			let loadedSnapshot = ClipboardSnapshot.createFromData( await storage.getItem( curKey ) );
 			loadedSnapshot._storageKey = curKey;
-			this.add( loadedSnapshot );
+			await this.add( loadedSnapshot );
 		}
 	}
 
