@@ -1,4 +1,5 @@
 {
 	"persistentStorage": true,
-	"maxSnapshots": 50
+	"maxSnapshots": 50,
+	"allowSubsequentDuplicates": false
 }

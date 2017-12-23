@@ -109,7 +109,7 @@ class App {
 		let newSnapshot = ClipboardSnapshot.createFromClipboard(),
 			last = this.snapshots.getFirst();
 
-		if ( last && last.equals( newSnapshot ) && confirm( 'Dude, you already have a snapshot like that, would you like to reuse it?' ) ) {
+		if ( !this.config.allowSubsequentDuplicates && last && last.equals( newSnapshot ) ) {
 			this.snapshots.select( last );
 			return last;
 		}
