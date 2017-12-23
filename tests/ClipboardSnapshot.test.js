@@ -1,7 +1,5 @@
-// This will mock  win-clipboard.
-require( './mock/ClipboardSnapshotMock' );
-
-const ClipboardSnapshot = require( '../src/ClipboardSnapshot' );
+const ClipboardSnapshotMock = require( './mock/ClipboardSnapshotMock' ),
+	ClipboardSnapshot = require( '../src/ClipboardSnapshot' );
 
 describe( 'ClipboardSnapshot', () => {
 	describe( 'createFromData', () => {
@@ -34,6 +32,80 @@ describe( 'ClipboardSnapshot', () => {
 
 			expect( env.name ).to.be.equal( 'fancy-os' );
 			expect( env.release ).to.be.equal( '5.0.6' );
+		} );
+	} );
+
+	describe( 'Comparing', () => {
+		let snapshots;
+
+		beforeEach( () => {
+			snapshots = {
+				original: new ClipboardSnapshotMock( {
+					aa: Buffer.from( [ 64, 65 ] ),
+					bb: Buffer.from( [ 64, 65 ] )
+				} ),
+				// Snapshot with equal content to original.
+				equal: new ClipboardSnapshotMock( {
+					aa: Buffer.from( [ 64, 65 ] ),
+					bb: Buffer.from( [ 64, 65 ] )
+				} ),
+				// One property differs from original.
+				different: new ClipboardSnapshotMock( {
+					aa: Buffer.from( [ 64, 65 ] ),
+					bb: Buffer.from( [ 68, 72 ] )
+				} ),
+				// Partially equal to original.
+				partial: new ClipboardSnapshotMock( {
+					aa: Buffer.from( [ 64, 65 ] )
+				} )
+			};
+		} );
+
+		describe( 'equals()', () => {
+			it( 'Tells different snapshots', () => {
+				expect( snapshots.original.equals( snapshots.different ) ).to.be.false;
+			} );
+
+			it( 'Tells partially different snapshots', () => {
+				expect( snapshots.original.equals( snapshots.partial ) ).to.be.false;
+			} );
+
+			it( 'Tells equal snapshots', () => {
+				expect( snapshots.original.equals( snapshots.equal ) ).to.be.true;
+			} );
+
+			it( 'Tells same snapshots', () => {
+				expect( snapshots.original.equals( snapshots.original ) ).to.be.true;
+			} );
+		} );
+
+		describe( 'Hashing', () => {
+			it( 'Sets hashes only on demand', () => {
+				expect( snapshots.original._hashesCached, 'hash before fetching' ).to.be.undefined;
+				let hashes = snapshots.original._hashes;
+				expect( snapshots.original._hashesCached, 'hash after fetching' ).not.to.be.undefined;
+				expect( hashes ).to.be.instanceOf( Map );
+			} );
+
+			it( 'Returns correct hashes', () => {
+				let hashes = snapshots.original._hashes;
+				expect( hashes ).to.be.deep.equal( new Map( [
+					[ 'aa', -1334104836 ],
+					[ 'bb', -1334104836 ]
+				] ) );
+			} );
+
+			it( 'Tells different snapshots', () => {
+				expect( snapshots.original._hashes ).not.to.be.deep.equal( snapshots.different._hashes );
+			} );
+
+			it( 'Tells partially different snapshots', () => {
+				expect( snapshots.original._hashes ).not.to.be.deep.equal( snapshots.partial._hashes );
+			} );
+
+			it( 'Tells equal snapshots', () => {
+				expect( snapshots.original._hashes ).to.be.deep.equal( snapshots.equal._hashes );
+			} );
 		} );
 	} );
 } );

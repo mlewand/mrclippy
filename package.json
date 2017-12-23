@@ -30,6 +30,8 @@
   ],
   "dependencies": {
     "bootstrap": "^4.0.0-beta.2",
+    "crc-32": "^1.1.1",
+    "deep-eql": "^3.0.1",
     "electron-debug": "^1.4.0",
     "electron-rebuild": "^1.5.7",
     "fs-extra": "^4.0.2",

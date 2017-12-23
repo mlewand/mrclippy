@@ -49,7 +49,7 @@ class SnapshotsList extends EventEmitter {
 
 		if ( this._isStorageEnabled() ) {
 			if ( typeof item._storageKey === 'undefined' ) {
-				item._storageKey = await this._app.storage.requestNewSnasphotKey();
+				item._storageKey = await this._app.storage.requestNewSnapshotKey();
 			}
 
 			await this._storage.setItem( item._storageKey, SnapshotStorer._getSnapshotObject( item ) );
