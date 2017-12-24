@@ -34,10 +34,40 @@ class MainWindowController {
 			viewer = this.viewers[ viewerName ];
 		}
 
+		this._showContainers( [ 'render', 'previewTypes' ] );
+
 		this.app.previews.update( this.viewers, item, previewType );
 
 		prev.innerHTML = '';
 		viewer.display( item, previewType, prev );
+	}
+
+	/**
+	 * Displays a view that prompts user to create a clipboard snapshot.
+	 */
+	promptItemSelection() {
+		this._showContainers( [ 'content' ] );
+
+		document.getElementById( 'content' ).innerHTML = '<div class="alert alert-success fade show" role="alert">' +
+				'<p>No clipboard snapshot is selected 😱</p>' +
+				'<p>You can use <button class="btn btn-success btn-xl" onclick="app.captureSnapshot()">Capture a snapshot</button> button to create one!</p>' +
+			'</div>';
+	}
+
+	/**
+	 * Shows given `containers` and hides remaining ones.
+	 *
+	 * @param {string[]} containers Id of HTML containers to be shown. All others will be hidden.
+	 */
+	_showContainers( containers ) {
+		const allContainers = [ 'previewTypes', 'content', 'render' ];
+
+		for ( let id of allContainers ) {
+			let elem = document.getElementById( id );
+			if ( elem ) {
+				elem.style.display = containers.includes( id ) ? null : 'none';
+			}
+		}
 	}
 }
 
