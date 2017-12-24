@@ -45,13 +45,39 @@ class Navigation extends Component {
 	}
 
 	getNavigationFor( item ) {
-		let ret = document.createElement( 'button' );
-		ret.classList = 'item list-group-item list-group-item-action btn-sm';
-		ret.innerHTML = item.getLabel();
-		ret.addEventListener( 'click', () => {
+		let ret = document.createElement( 'div' );
+		ret.classList = 'item list-group-item list-group-item-action btn-group no-gutters';
+
+		let snapshotButton = document.createElement( 'a' );
+		snapshotButton.classList = 'btn';
+		snapshotButton.innerHTML = item.getLabel();
+		snapshotButton.addEventListener( 'click', () => {
 			this.snapshots.select( item );
 		} );
+
+		let labelEdit = document.createElement( 'span' );
+		labelEdit.classList = 'edit-btn';
+		labelEdit.innerHTML = '✍';
+		labelEdit.addEventListener( 'click', () => {
+			this.editItem( item );
+		} );
+
+		let labelRemove = document.createElement( 'span' );
+		labelRemove.classList = 'remove-btn';
+		labelRemove.innerHTML = '🗑';
+		labelRemove.addEventListener( 'click', () => {
+			this.snapshots.remove( item );
+		} );
+
+		ret.appendChild( snapshotButton );
+		ret.appendChild( labelEdit );
+		ret.appendChild( labelRemove );
+
 		return ret;
+	}
+
+	editItem( item ) {
+		console.log( `You're about to edit item ${item.getLabel()}` );
 	}
 }
 

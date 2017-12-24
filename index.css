@@ -25,6 +25,16 @@ html .btn {
 	padding-right: 0.5rem;
 }
 
+#navigation .edit-btn,
+#navigation .remove-btn {
+	display: none;
+}
+
+#navigation .active .edit-btn,
+#navigation .active .remove-btn {
+	display: inline;
+}
+
 .preview-iframe {
 	display: block;
 	width: 100%;
