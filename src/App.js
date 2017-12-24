@@ -29,15 +29,14 @@ class App {
 		await this.snapshots.loadFromStorage();
 
 		this.snapshots.on( 'selected', item => {
-			if ( !item ) {
-				// #42.
-				return;
-			}
+			if ( item ) {
+				let firstType = item.getTypes().next().value;
 
-			let firstType = item.getTypes().next().value;
-
-			if ( firstType ) {
-				this.controller.previewItem( item, firstType );
+				if ( firstType ) {
+					this.controller.previewItem( item, firstType );
+				}
+			} else {
+				this.controller.promptItemSelection();
 			}
 		} );
 
