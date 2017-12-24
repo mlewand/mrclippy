@@ -47,10 +47,9 @@ class SnapshotsList extends EventEmitter {
 
 		this._store.add( item );
 
-		if ( this._isStorageEnabled() ) {
-			if ( typeof item._storageKey === 'undefined' ) {
-				item._storageKey = await this._app.storage.requestNewSnapshotKey();
-			}
+		if ( this._isStorageEnabled() && typeof item._storageKey === 'undefined' ) {
+			// Item is not yet added to the persistent storage.
+			item._storageKey = await this._app.storage.requestNewSnapshotKey();
 
 			await this._storage.setItem( item._storageKey, SnapshotStorer._getSnapshotObject( item ) );
 		}
@@ -114,7 +113,7 @@ class SnapshotsList extends EventEmitter {
 		for ( let curKey of keys ) {
 			let loadedSnapshot = ClipboardSnapshot.createFromData( await storage.getItem( curKey ) );
 			loadedSnapshot._storageKey = curKey;
-			this.add( loadedSnapshot );
+			await this.add( loadedSnapshot );
 		}
 	}
 
@@ -123,6 +122,16 @@ class SnapshotsList extends EventEmitter {
 	 */
 	getLast() {
 		return this._store.values().next().value;
+	}
+
+	getFirst() {
+		let lastVal;
+
+		for ( let val of this._store.values() ) {
+			lastVal = val;
+		}
+
+		return lastVal;
 	}
 
 	/**

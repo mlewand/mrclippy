@@ -34,7 +34,7 @@ class Storage {
 			ret = 0; // Default value for empty array.
 
 		if ( keys.length ) {
-			ret = String( parseInt( keys[ keys.length - 1 ] ) + 1 );
+			ret = Math.max.apply( window, keys.map( key => parseInt( key ) ) ) + 1;
 		}
 
 		return String( ret );
