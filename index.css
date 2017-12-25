@@ -15,6 +15,24 @@ html .list-group-item {
 	padding: 0.18em 0.3em;
 }
 
+#navigation .list-group-item {
+	padding: 0.1em 0;
+}
+
+#navigation .list-group-item {
+	background: red;
+}
+
+#navigation .list-group-item:first-child {
+	border-top-left-radius: 0.5em;
+	border-top-right-radius: 0.5em;
+}
+
+#navigation .list-group-item:last-child {
+	border-bottom-left-radius: 0.5em;
+	border-bottom-right-radius: 0.5em;
+}
+
 html .btn {
 	padding: 0.1em 1.0em;
 }
@@ -25,14 +43,35 @@ html .btn {
 	padding-right: 0.5rem;
 }
 
-#navigation .edit-btn,
-#navigation .remove-btn {
+#navigation {
+	display: flex;
+	flex-direction: column;
+}
+
+#navigation .list-group-item {
+	display: flex;
+	flex-direction: row;
+	align-content: stretch;
+	align-items: stretch;
+}
+
+#navigation .list-group-item:not(.active) button.edit-btn,
+#navigation .list-group-item:not(.active) button.remove-btn {
 	display: none;
+}
+
+#navigation .list-group-item .label-btn {
+	flex: 1;
+}
+
+#navigation .list-group-item > * {
+	display: flex;
 }
 
 #navigation .active .edit-btn,
 #navigation .active .remove-btn {
-	display: inline;
+	border-left: 1px solid rgba(0, 0, 0, 0.425);
+	padding: 0.2em;
 }
 
 .preview-iframe {
@@ -40,3 +79,17 @@ html .btn {
 	width: 100%;
 	border: 0px;
 }
+
+/*
+#navigation .list-group-item {
+	display: flex;
+}
+
+#navigation .list-group-item button {
+	display: flex;
+	padding: 0px;
+}
+
+.label-btn {
+	align-self: stretch;
+} */
