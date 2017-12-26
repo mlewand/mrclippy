@@ -1,4 +1,4 @@
-#previewTypes .btn {
+#previewMenu .btn {
 	margin-right: 0.2em;
 }
 
@@ -6,7 +6,7 @@
 	font-size: 0.9em
 }
 
-#previewTypes {
+#previewMenu {
 	padding-bottom: 0.2em;
 	border-bottom: 1px solid rgba(0, 0, 0, 0.125);
 }
