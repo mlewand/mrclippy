@@ -45,6 +45,25 @@
 			return this._content.get( type );
 		}
 
+		/**
+		 * @param {string} type Clipboard type to be written e.g. `'HTML Format'` or `'CF_UNICODETEXT'`.
+		 * @param {Buffer/Uint8Array} data Data to be written.
+		 */
+		setValue( type, data ) {
+			if ( !isBuffer( data ) ) {
+				console.error( `ClipboardSnapshot.setValue() invalid argument, expected buffer while ${typeof data} was given.` );
+			}
+
+			if ( this._content.has( type ) && deepEql( this._content.get( type ), data ) ) {
+				// If entries are the same, no reason to process it.
+				return;
+			}
+
+			this._content.set( type, data );
+
+			this.emit( 'changed' );
+		}
+
 		getLabel() {
 			return this.label;
 		}
