@@ -49,6 +49,10 @@ describe( 'ClipboardSnapshot', () => {
 					aa: Buffer.from( [ 64, 65 ] ),
 					bb: Buffer.from( [ 64, 65 ] )
 				} ),
+				equalUintArray: new ClipboardSnapshotMock( {
+					aa: new Uint8Array( [ 64, 65 ] ),
+					bb: new Uint8Array( [ 64, 65 ] )
+				} ),
 				// One property differs from original.
 				different: new ClipboardSnapshotMock( {
 					aa: Buffer.from( [ 64, 65 ] ),
@@ -77,6 +81,10 @@ describe( 'ClipboardSnapshot', () => {
 
 			it( 'Tells equal snapshots', () => {
 				expect( snapshots.original.equals( snapshots.equal ) ).to.be.true;
+			} );
+
+			it( 'Tells equal using a different buffer view', () => {
+				expect( snapshots.original.equals( snapshots.equalUintArray ) ).to.be.true;
 			} );
 
 			it( 'Tells same snapshots', () => {

@@ -7,7 +7,10 @@
 		OsEnvironment = require( './OsEnvironment' ),
 		crc32 = require( 'crc-32' ),
 		deepEql = require( 'deep-eql' ),
-		isBuffer = require( 'is-buffer' );
+		isBufferBase = require( 'is-buffer' ),
+		isBuffer = function( buffer ) {
+			return isBufferBase( buffer ) || buffer instanceof Object.getPrototypeOf( Int8Array );
+		};
 
 	class ClipboardSnapshot extends EventEmitter {
 		/**
