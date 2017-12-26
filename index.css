@@ -15,24 +15,6 @@ html .list-group-item {
 	padding: 0.18em 0.3em;
 }
 
-#navigation .list-group-item {
-	padding: 0.1em 0;
-}
-
-#navigation .list-group-item {
-	background: red;
-}
-
-#navigation .list-group-item:first-child {
-	border-top-left-radius: 0.5em;
-	border-top-right-radius: 0.5em;
-}
-
-#navigation .list-group-item:last-child {
-	border-bottom-left-radius: 0.5em;
-	border-bottom-right-radius: 0.5em;
-}
-
 html .btn {
 	padding: 0.1em 1.0em;
 }
@@ -62,6 +44,10 @@ html .btn {
 
 #navigation .list-group-item .label-btn {
 	flex: 1;
+	flex-shrink: 1;
+	min-width: 0; /* Otherwise label would overflow outside of it's wrapper. */
+	overflow: hidden;
+	text-overflow: ellipsis;
 }
 
 #navigation .list-group-item > * {
@@ -78,4 +64,8 @@ html .btn {
 	display: block;
 	width: 100%;
 	border: 0px;
+}
+
+html .btn-light:focus, html .btn-light.focus {
+	box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
 }

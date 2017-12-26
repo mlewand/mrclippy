@@ -41,6 +41,8 @@ class Navigation extends Component {
 
 		if ( curItem ) {
 			curItem.classList.add( 'active' );
+
+			this._appendNavigationSubActions( item );
 		}
 	}
 
@@ -49,35 +51,53 @@ class Navigation extends Component {
 		ret.classList = 'item list-group-item list-group-item-action no-gutters btn-group';
 
 		let snapshotButton = document.createElement( 'button' );
-		snapshotButton.classList = 'clip-button label-btn btn btn-primary';
+		snapshotButton.classList = 'clip-button label-btn btn btn-light';
 		snapshotButton.innerHTML = item.getLabel();
 		snapshotButton.addEventListener( 'click', () => {
 			this.snapshots.select( item );
 		} );
 
-		let labelEdit = document.createElement( 'button' );
-		labelEdit.classList = 'clip-button edit-btn btn btn-primary';
-		labelEdit.innerHTML = '✍';
-		labelEdit.addEventListener( 'click', () => {
-			this.editItem( item );
-		} );
-
-		let labelRemove = document.createElement( 'button' );
-		labelRemove.classList = 'clip-button remove-btn btn btn-primary';
-		labelRemove.innerHTML = '🗑';
-		labelRemove.addEventListener( 'click', () => {
-			this.snapshots.remove( item );
-		} );
-
 		ret.appendChild( snapshotButton );
-		ret.appendChild( labelEdit );
-		ret.appendChild( labelRemove );
 
 		return ret;
 	}
 
 	editItem( item ) {
 		console.log( `You're about to edit item ${item.getLabel()}` );
+	}
+
+	/**k
+	 * Appends buttons for sub-actions for a given snapshot item. It also make sure to remove these buttons for previously
+	 * selected snapshot item.
+	 *
+	 * @private
+	 * @param {ClipboardSnapshot} item Item that the buttons should be added for.
+	 */
+	_appendNavigationSubActions( item ) {
+		// First remove old buttons.
+		this._elem.querySelectorAll( '.edit-btn, .remove-btn' ).forEach( el => el.remove() );
+
+		// Now add new buttons.
+		// Technically it would be nice to just move buttons found above to the new wrapper and adjust the onclick listener
+		// so it dynamically picks clicked snapshot, but it's fine for now.
+		let targetWrapper = this._listItems.get( item ),
+			labelEdit = document.createElement( 'button' ),
+			labelRemove = document.createElement( 'button' );
+
+		labelEdit.classList = 'clipi-button edit-btn btn btn-light';
+		labelEdit.innerHTML = '✍';
+		labelEdit.addEventListener( 'click', () => {
+			this.editItem( item );
+		} );
+
+		labelRemove.classList = 'clip-button remove-btn btn btn-light';
+		labelRemove.innerHTML = '🗑';
+		labelRemove.addEventListener( 'click', () => {
+			this.snapshots.remove( item );
+		} );
+
+		targetWrapper.appendChild( labelEdit );
+		targetWrapper.appendChild( labelRemove );
 	}
 }
 
