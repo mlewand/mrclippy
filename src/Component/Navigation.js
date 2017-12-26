@@ -19,6 +19,8 @@ class Navigation extends Component {
 
 		this._elem.prepend( listItem );
 
+		item.on( 'changed', () => this.itemChanged( item, listItem ) );
+
 		this._listItems.set( item, listItem );
 	}
 
@@ -46,6 +48,16 @@ class Navigation extends Component {
 		}
 	}
 
+	itemChanged( item, listItem ) {
+		listItem.querySelectorAll( '.label-btn' ).forEach( el => {
+			el.innerText = item.getLabel();
+		} );
+
+		listItem.querySelectorAll( '.label-input' ).forEach( el => {
+			el.value = item.getLabel();
+		} );
+	}
+
 	getNavigationFor( item ) {
 		let ret = document.createElement( 'li' );
 		ret.classList = 'item list-group-item list-group-item-action no-gutters btn-group';
@@ -63,7 +75,47 @@ class Navigation extends Component {
 	}
 
 	editItem( item ) {
-		console.log( `You're about to edit item ${item.getLabel()}` );
+		let targetWrapper = this._listItems.get( item ),
+			input = document.createElement( 'input' ),
+			// Callback to be called once the label input is blurred, which means editing is done.
+			complete = function( evt ) {
+				item.setLabel( this.value );
+
+				targetWrapper.querySelectorAll( '.btn' ).forEach( el => el.classList.remove( 'hidden' ) );
+
+				if ( !evt.relatedTarget ) {
+					// In case no item gets the focus, move focus to the label button.
+					targetWrapper.querySelectorAll( '.label-btn' ).forEach( el => el.focus() );
+				}
+
+				this.remove();
+			};
+
+		// Hide the "default button set".
+		targetWrapper.querySelectorAll( '.btn' ).forEach( el => el.classList.add( 'hidden' ) );
+		targetWrapper.querySelectorAll( 'input' ).forEach( el => el.remove() );
+
+		// Set up the input.
+		input.type = 'text';
+		input.value = item.getLabel();
+		input.classList = 'label-input';
+
+		input.addEventListener( 'blur', complete );
+		input.addEventListener( 'keyup', evt => {
+			if ( evt.keyCode === 13 && !evt.shiftKey ) {
+				// Blur will take care of hiding the input and bringing back the default button set.
+				input.blur();
+			} else if ( evt.keyCode === 27 ) {
+				// To reuse logic we'll revert the input value back to default and blur it so that it
+				// gets hidden.
+				input.value = item.getLabel();
+				input.blur();
+			}
+		} );
+
+		// Commit changes.
+		targetWrapper.prepend( input );
+		input.focus();
 	}
 
 	/**k
