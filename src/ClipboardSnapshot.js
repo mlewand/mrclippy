@@ -96,19 +96,21 @@
 		 * @returns {ClipboardSnapshot}
 		 */
 		static createFromClipboard() {
-			let ret = new ClipboardSnapshot();
-
-			let types = clipboard.availableFormats();
+			let ret = new ClipboardSnapshot(),
+				types = clipboard.availableFormats(),
+				textValue = clipboard.readText(),
+				label = 'Snapshot';
 
 			ret._content = new Map( types.map( type => {
 				return [ type, clipboard.read( type ) ];
 			} ) );
 
-			let textValue = clipboard.readText().trim();
-
-			if ( textValue.length ) {
-				ret.setLabel( textValue );
+			// Determine the label.
+			if ( typeof textValue == 'string' ) {
+				label = textValue.trim();
 			}
+
+			ret.setLabel( label );
 
 			return ret;
 		}

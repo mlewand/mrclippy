@@ -127,4 +127,24 @@ describe( 'ClipboardSnapshot', () => {
 			} );
 		} );
 	} );
+
+	describe( 'createFromClipboard()', () => {
+		const clipboard = require( '../src/clipboard' ),
+			sandbox = sinon.createSandbox();
+
+		before( () => {
+			sandbox.stub( clipboard, 'availableFormats' ).returns( [ 'custom-binary' ] );
+			sandbox.stub( clipboard, 'read' ).returns( Buffer.from( [ 73, 74 ] ) );
+			sandbox.stub( clipboard, 'readText' ).returns( undefined );
+		} );
+
+		after( () => {
+			sandbox.restore();
+		} );
+
+		it( 'Doesnt break for non-textual snapshots', () => {
+			// #50
+			expect( ClipboardSnapshot.createFromClipboard().getLabel() ).to.be.equal( 'Snapshot' );
+		} );
+	} );
 } );
