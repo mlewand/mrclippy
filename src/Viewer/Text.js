@@ -1,7 +1,8 @@
-'use strict';
+﻿'use strict';
 
 const Viewer = require( './Viewer' ),
-	Reader = require( '../Reader/Reader' );
+	Reader = require( '../Reader/Reader' ),
+	TextEditor = require( '../Editor/Text' );
 
 class Text extends Viewer {
 	constructor() {
@@ -18,6 +19,14 @@ class Text extends Viewer {
 	handles() {
 		// For now let's assume that it handles everything.
 		return true;
+	}
+
+	getEditor( _type ) {
+		if ( !this._editor ) {
+			this._editor = new TextEditor();
+		}
+
+		return this._editor;
 	}
 
 	/**
