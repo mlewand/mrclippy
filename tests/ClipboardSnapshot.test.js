@@ -42,6 +42,14 @@ describe( 'ClipboardSnapshot', () => {
 			expect( changedListener ).not.to.be.called;
 		} );
 
+		it( 'Bails out hashes', () => {
+			mock._hashesCached = 1;
+
+			mock.setValue( 'bb', Buffer.from( [ 72 ] ) );
+
+			expect( mock._hashesCached ).to.be.null;
+		} );
+
 		describe( 'Error handling', () => {
 			before( () => sinon.stub( console, 'error' ) );
 			after( () => console.error.restore() );
