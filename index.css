@@ -47,10 +47,14 @@ html .btn {
     border-color: #007bff;
 }
 
-#navigation .list-group-item .label-btn {
+#navigation .list-group-item .label-btn,
+#navigation .list-group-item input {
 	flex: 1;
 	flex-shrink: 1;
 	min-width: 0; /* Otherwise label would overflow outside of it's wrapper. */
+}
+
+#navigation .list-group-item .label-btn {
 	overflow: hidden;
 	text-overflow: ellipsis;
 }
