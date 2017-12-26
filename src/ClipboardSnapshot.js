@@ -61,6 +61,8 @@
 
 			this._content.set( type, data );
 
+			this._hashesCached = null;
+
 			this.emit( 'changed' );
 		}
 
