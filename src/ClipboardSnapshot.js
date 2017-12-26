@@ -2,16 +2,19 @@
 	'use strict';
 
 	const LABEL_MAX_LENGTH = 50,
+		EventEmitter = require( 'events' ),
 		clipboard = require( './clipboard' ),
 		OsEnvironment = require( './OsEnvironment' ),
 		crc32 = require( 'crc-32' );
 
-	class ClipboardSnapshot {
+	class ClipboardSnapshot extends EventEmitter {
 		/**
 		 * @param {OsEnvironment} [env=null] Environment for which the snapshot was taken. If skipped it will be
 		 * detected automatically.
 		 */
 		constructor( env ) {
+			super();
+
 			this._content = new Map();
 			/**
 			 * Environment info for the platform that was used to create this snapshot.
@@ -39,6 +42,16 @@
 
 		getLabel() {
 			return this.label;
+		}
+
+		setLabel( newVal ) {
+			let proposedVal = String( newVal );
+			proposedVal = proposedVal.substr( 0, LABEL_MAX_LENGTH ) + ( proposedVal.length > LABEL_MAX_LENGTH ? '…' : '' );
+
+			if ( proposedVal !== this.label ) {
+				this.label = proposedVal;
+				this.emit( 'changed' );
+			}
 		}
 
 		/**
@@ -91,7 +104,7 @@
 			let textValue = clipboard.readText().trim();
 
 			if ( textValue.length ) {
-				ret.label = textValue.substr( 0, LABEL_MAX_LENGTH ) + ( textValue.length > LABEL_MAX_LENGTH ? '…' : '' );
+				ret.setLabel( textValue );
 			}
 
 			return ret;

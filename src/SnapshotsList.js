@@ -56,6 +56,14 @@ class SnapshotsList extends EventEmitter {
 
 		this.emit( 'added', item );
 		this.emit( 'changed' );
+
+		// As item gets changed, the changes has to be reflected in storage.
+		// @todo: extract this logic to a dedicated snapshot provider type.
+		item.on( 'changed', () => {
+			if ( item._storageKey ) {
+				this._storage.setItem( item._storageKey, SnapshotStorer._getSnapshotObject( item ) );
+			}
+		} );
 	}
 
 	async remove( item ) {

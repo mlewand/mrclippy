@@ -25,8 +25,60 @@ html .btn {
 	padding-right: 0.5rem;
 }
 
+#navigation {
+	display: flex;
+	flex-direction: column;
+}
+
+#navigation .list-group-item {
+	display: flex;
+	flex-direction: row;
+	align-content: stretch;
+	align-items: stretch;
+}
+
+#navigation .active {
+	background-color: inherit;
+}
+
+#navigation .active .btn {
+    color: #fff;
+    background-color: #007bff;
+    border-color: #007bff;
+}
+
+#navigation .list-group-item .label-btn,
+#navigation .list-group-item input {
+	flex: 1;
+	flex-shrink: 1;
+	min-width: 0; /* Otherwise label would overflow outside of it's wrapper. */
+}
+
+#navigation .list-group-item .label-btn {
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+#navigation .list-group-item > * {
+	display: flex;
+}
+
+#navigation .active .edit-btn,
+#navigation .active .remove-btn {
+	border-left: 1px solid rgba(0, 0, 0, 0.425);
+	padding: 0.2em;
+}
+
 .preview-iframe {
 	display: block;
 	width: 100%;
 	border: 0px;
+}
+
+html .btn-light:focus, html .btn-light.focus {
+	box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+.hidden, #navigation .list-group-item .hidden {
+	display: none;
 }
