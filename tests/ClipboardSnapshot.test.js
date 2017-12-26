@@ -60,7 +60,7 @@ describe( 'ClipboardSnapshot', () => {
 				} ),
 				// Messed.
 				messed: new ClipboardSnapshotMock( {
-					aa: Buffer.from( [ 64, 65 ] ),
+					aa: null,
 					bb: undefined
 				} )
 			};
@@ -121,7 +121,7 @@ describe( 'ClipboardSnapshot', () => {
 				// #49
 				let hashes = snapshots.messed._hashes;
 				expect( hashes ).to.be.deep.equal( new Map( [
-					[ 'aa', -1334104836 ],
+					[ 'aa', null ],
 					[ 'bb', undefined ]
 				] ) );
 			} );

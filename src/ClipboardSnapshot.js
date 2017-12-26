@@ -6,7 +6,8 @@
 		clipboard = require( './clipboard' ),
 		OsEnvironment = require( './OsEnvironment' ),
 		crc32 = require( 'crc-32' ),
-		deepEql = require( 'deep-eql' );
+		deepEql = require( 'deep-eql' ),
+		isBuffer = require( 'is-buffer' );
 
 	class ClipboardSnapshot extends EventEmitter {
 		/**
@@ -77,7 +78,7 @@
 				this._hashesCached = new Map(
 					Array.from( this._content.keys() ).map( key => {
 						let val = this._content.get( key );
-						return [ key, typeof val !== 'undefined' ? crc32.buf( val ) : val ];
+						return [ key, isBuffer( val ) ? crc32.buf( val ) : val ];
 					} )
 				);
 			}

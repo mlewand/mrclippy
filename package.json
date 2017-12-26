@@ -35,6 +35,7 @@
     "electron-debug": "^1.4.0",
     "electron-rebuild": "^1.5.7",
     "fs-extra": "^4.0.2",
+    "is-buffer": "^1.1.6",
     "jszip": "^3.1.5",
     "localforage": "^1.5.5",
     "pad": "^1.1.0",
