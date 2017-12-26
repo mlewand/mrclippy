@@ -1,6 +1,7 @@
 'use strict';
 
 const Viewer = require( './Viewer' ),
+	TextEditor = require( '../Editor/Text' ),
 	utf8decoder = new TextDecoder( 'utf8' ),
 	utf16decoder = new TextDecoder( 'utf-16le' );
 
@@ -19,6 +20,14 @@ class Text extends Viewer {
 	handles() {
 		// For now let's assume that it handles everything.
 		return true;
+	}
+
+	getEditor( _type ) {
+		if ( !this._editor ) {
+			this._editor = new TextEditor();
+		}
+
+		return this._editor;
 	}
 
 	/**
