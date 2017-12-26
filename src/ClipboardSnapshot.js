@@ -5,7 +5,9 @@
 		EventEmitter = require( 'events' ),
 		clipboard = require( './clipboard' ),
 		OsEnvironment = require( './OsEnvironment' ),
-		crc32 = require( 'crc-32' );
+		crc32 = require( 'crc-32' ),
+		deepEql = require( 'deep-eql' ),
+		isBuffer = require( 'is-buffer' );
 
 	class ClipboardSnapshot extends EventEmitter {
 		/**
@@ -63,8 +65,6 @@
 		 * @returns {Boolean} `true` if both snapshots are equal.
 		 */
 		equals( other ) {
-			const deepEql = require( 'deep-eql' );
-
 			return deepEql( this._hashes, other._hashes );
 		}
 
@@ -76,7 +76,10 @@
 		get _hashes() {
 			if ( !this._hashesCached ) {
 				this._hashesCached = new Map(
-					Array.from( this._content.keys() ).map( key => [ key, crc32.buf( this._content.get( key ) ) ] )
+					Array.from( this._content.keys() ).map( key => {
+						let val = this._content.get( key );
+						return [ key, isBuffer( val ) ? crc32.buf( val ) : val ];
+					} )
 				);
 			}
 
