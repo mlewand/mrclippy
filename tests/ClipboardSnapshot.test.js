@@ -57,6 +57,11 @@ describe( 'ClipboardSnapshot', () => {
 				// Partially equal to original.
 				partial: new ClipboardSnapshotMock( {
 					aa: Buffer.from( [ 64, 65 ] )
+				} ),
+				// Messed.
+				messed: new ClipboardSnapshotMock( {
+					aa: Buffer.from( [ 64, 65 ] ),
+					bb: undefined
 				} )
 			};
 		} );
@@ -76,6 +81,11 @@ describe( 'ClipboardSnapshot', () => {
 
 			it( 'Tells same snapshots', () => {
 				expect( snapshots.original.equals( snapshots.original ) ).to.be.true;
+			} );
+
+			it( 'Doesnt break with undefined values', () => {
+				// #49
+				expect( snapshots.original.equals( snapshots.messed ) ).to.be.false;
 			} );
 		} );
 
@@ -105,6 +115,15 @@ describe( 'ClipboardSnapshot', () => {
 
 			it( 'Tells equal snapshots', () => {
 				expect( snapshots.original._hashes ).to.be.deep.equal( snapshots.equal._hashes );
+			} );
+
+			it( 'Returns correct hashes', () => {
+				// #49
+				let hashes = snapshots.messed._hashes;
+				expect( hashes ).to.be.deep.equal( new Map( [
+					[ 'aa', -1334104836 ],
+					[ 'bb', undefined ]
+				] ) );
 			} );
 		} );
 	} );
