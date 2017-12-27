@@ -1,7 +1,8 @@
-'use strict';
+﻿'use strict';
 
 const Viewer = require( '../Viewer' ),
-	Reader = require( '../../Reader/Reader' );
+	Reader = require( '../../Reader/Reader' ),
+	HtmlEditor = require( '../../Editor/Html' );
 
 class Text extends Viewer {
 	constructor() {
@@ -17,6 +18,14 @@ class Text extends Viewer {
 	 */
 	handles( type ) {
 		return type.toLowerCase().indexOf( 'html' ) !== -1;
+	}
+
+	getEditor( _type ) {
+		if ( !this._editor ) {
+			this._editor = new HtmlEditor();
+		}
+
+		return this._editor;
 	}
 
 	/**
