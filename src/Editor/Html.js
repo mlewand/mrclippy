@@ -57,17 +57,12 @@ class Html extends Editor {
 	async _getMonaco() {
 		// Code is heavily based on:
 		// https://github.com/Microsoft/monaco-editor-samples/blob/4ce21071528f9b6f898975ff35730e6833552623/sample-electron/index.html
-		let nodeRequire = global.require,
-			editorPrototype = Object.getPrototypeOf( this ),
-			amdRequire = editorPrototype._amdRequire;
+		// It caches AMD loader from Monaco in a cached variable in prototype, so that other instances have access to it.
+		let editorPrototype = Object.getPrototypeOf( this );
 
-		if ( !amdRequire ) {
+		if ( !editorPrototype._amdRequire ) {
 			// Monaco is being loaded for the first time.
-			let monacoLoader = require( '../../node_modules/monaco-editor/min/vs/loader.js' );
-
-			// amdRequire = global.require;
-			amdRequire = monacoLoader.require;
-			global.require = nodeRequire;
+			editorPrototype._amdRequire = require( '../../node_modules/monaco-editor/min/vs/loader.js' ).require;
 
 			function uriFromPath( _path ) {
 				var pathName = path.resolve( _path ).replace( /\\/g, '/' );
@@ -76,20 +71,19 @@ class Html extends Editor {
 				}
 				return encodeURI( 'file://' + pathName );
 			}
-			amdRequire.config( {
+
+			editorPrototype._amdRequire.config( {
 				baseUrl: uriFromPath( path.join( __dirname, '..', '../node_modules/monaco-editor/min' ) )
 			} );
 
-			// workaround monaco-css not understanding the environment
+			// Workaround monaco-css not understanding the environment.
 			self.module = undefined;
-			// workaround monaco-typescript not understanding the environment
+			// Workaround monaco-typescript not understanding the environment.
 			self.process.browser = true;
-
-			editorPrototype._amdRequire = amdRequire;
 		}
 
-		return new Promise( function( resolve ) {
-			amdRequire( [ 'vs/editor/editor.main' ], function() {
+		return new Promise( resolve => {
+			editorPrototype._amdRequire( [ 'vs/editor/editor.main' ], function() {
 				resolve( global.monaco );
 			} );
 		} );
