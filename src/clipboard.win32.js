@@ -22,6 +22,8 @@ module.exports = {
 	readText: function( type ) {
 		let encoding = null;
 
+		type = type || 'CF_UNICODETEXT';
+
 		if ( [ 'CF_UNICODETEXT', 'CF_TEXT' ].includes( type ) == false ) {
 			encoding = 'utf8';
 		}
