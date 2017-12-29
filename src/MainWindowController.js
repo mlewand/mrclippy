@@ -32,6 +32,8 @@ class MainWindowController {
 
 		if ( viewerName && this.viewers[ viewerName ] ) {
 			viewer = this.viewers[ viewerName ];
+		} else  {
+			viewerName = this._getViewerName( viewer );
 		}
 
 		this._showContainers( [ 'render', 'previewMenu' ] );
@@ -40,6 +42,7 @@ class MainWindowController {
 
 		prev.innerHTML = '';
 		viewer.display( item, previewType, prev );
+		this.app.previews.markViewer( viewerName );
 
 		this._appendEditorUi( item, previewType, viewer );
 	}
@@ -102,7 +105,8 @@ class MainWindowController {
 	 */
 	async _appendEditorUi( item, type, viewer ) {
 		let editor = viewer.getEditor(),
-			editorButton = document.querySelector( '#previewOptions .edit-btn' );
+			editorButton = document.querySelector( '#previewOptions .edit-btn' ),
+			viewerName = Object.keys( this.viewers ).filter( viewerKey => this.viewers[ viewerKey ] === viewer )[ 0 ];
 
 		const activeCssClass = 'btn-info';
 
@@ -126,7 +130,7 @@ class MainWindowController {
 					editorButton.classList.remove( activeCssClass );
 					await editor.save( item, type );
 					// Committing edit value.
-					this.previewItem( item, type );
+					this.previewItem( item, type, viewerName );
 				}
 			};
 
@@ -137,6 +141,14 @@ class MainWindowController {
 			editorButton.classList.add( 'hidden' );
 			editorButton.classList.remove( activeCssClass );
 		}
+	}
+
+	/**
+	 * @param {Viewer} viewer
+	 * @returns {string/undefined} Key in {@link _viewers} of a given `viewer`.
+	 */
+	_getViewerName( viewer ) {
+		return Object.keys( this.viewers ).filter( viewerKey => this.viewers[ viewerKey ] === viewer )[ 0 ];
 	}
 }
 
