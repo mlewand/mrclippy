@@ -33,7 +33,6 @@ module.exports = Object.assign( {}, clip, {
 		let readFunction = this._getElectronClipboardGetter( type );
 
 		if ( readFunction ) {
-			console.log( 'reading', type );
 			return this[ readFunction ]( type );
 		}
 
