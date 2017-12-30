@@ -17,8 +17,7 @@ class Reader {
 
 		// But images due to our custom logic images are returned as blob (since Electron operates on NativeImage).
 		if ( type.startsWith( 'image/' ) && isBuffer( ret ) ) {
-			// Treat images as encoded with ASCII.
-			ret = iconv.decode( Buffer.from( ret ), 'ascii' );
+			ret = iconv.decode( Buffer.from( ret ), 'utf8' );
 		}
 
 		return ret;
