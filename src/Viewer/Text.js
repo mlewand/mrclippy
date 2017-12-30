@@ -1,8 +1,7 @@
 'use strict';
 
 const Viewer = require( './Viewer' ),
-	utf8decoder = new TextDecoder( 'utf8' ),
-	utf16decoder = new TextDecoder( 'utf-16le' );
+	Reader = require( '../Reader/Reader' );
 
 class Text extends Viewer {
 	constructor() {
@@ -29,17 +28,9 @@ class Text extends Viewer {
 	 * @param {HTMLElement} element A wrapper element where the content preview have to be rendered.
 	 */
 	display( item, type, element ) {
-		let bytes = item.getValue( type ),
-			isWinClipboard = item.env.name == 'win32',
-			decoder = ( isWinClipboard && type === 'CF_UNICODETEXT' ) ? utf16decoder : utf8decoder,
-			string = decoder.decode( bytes );
+		let reader = Reader.getReaderFor( item );
 
-		if ( isWinClipboard && string[ string.length - 1 ] === '\0' ) {
-			// Windows always adds NULL byte char at the end.
-			string = string.slice( 0, -1 );
-		}
-
-		element.innerText = string;
+		element.innerText = reader.readText( item, type );
 	}
 }
 
