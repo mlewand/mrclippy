@@ -6,6 +6,19 @@ module.exports = {
 	availableFormats: () => winClipboard.getFormats(),
 
 	/**
+	 * Writes provided snapshot to the current OS clipboard.
+	 *
+	 * @param {ClipboardSnapshot} snapshot
+	 */
+	writeSnapshot( snapshot ) {
+		this.clear();
+
+		for ( let [ type, data ] of snapshot._content ) {
+			this.write( type, data );
+		}
+	},
+
+	/**
 	 * Reads `type` value from current OS clipboard.
 	 *
 	 * @param {string} type

@@ -1,5 +1,7 @@
 'use strict';
 
+const nativeImage = require( 'electron' ).nativeImage;
+
 let clip;
 
 if ( process.platform == 'win32' ) {
@@ -18,9 +20,23 @@ module.exports = Object.assign( {}, clip, {
 	writeSnapshot( snapshot ) {
 		this.clear();
 
-		for ( let [ type, data ] of snapshot._content ) {
-			this.write( type, data );
+		let clipboardData = {};
+
+		for ( let [ type, curData ] of snapshot._content ) {
+			let typeParts = type.split( '/' ),
+				electronType = typeParts[ typeParts.length - 1 ];
+
+			if ( type == 'text/plain' ) {
+				electronType = 'text';
+			} else if ( type.startsWith( 'image/' ) ) {
+				electronType = 'image';
+				curData = nativeImage.createFromBuffer( curData );
+			}
+
+			clipboardData[ electronType ] = curData;
 		}
+
+		clip.write( clipboardData );
 	},
 
 	/**
@@ -30,10 +46,28 @@ module.exports = Object.assign( {}, clip, {
 	 * @returns {mixed}
 	 */
 	read( type ) {
-		let readFunction = this._getElectronClipboardGetter( type );
+		let readFunction = this._getElectronClipboardGetter( type ),
+			ret = null;
 
 		if ( readFunction ) {
-			return this[ readFunction ]( type );
+			ret = this[ readFunction ]( type );
+		}
+
+		if ( ret.constructor && ret.constructor.toString().includes( 'NativeImage' ) ) {
+			// Electron returns NativeImage instances, which is not "serializable", converting to bytes.
+			// At the time of writing NativeImage is not exposed by Electron, so use `toString()`.
+			ret = Buffer.from( ret.toPNG() );
+		}
+
+		return ret;
+	},
+
+	write( type, data ) {
+		let readFunction = this._getElectronClipboardGetter( type ),
+			writeFunction = readFunction && readFunction.replace( 'read', 'write' );
+
+		if ( readFunction ) {
+			return this[ writeFunction ]( data );
 		}
 
 		return null;

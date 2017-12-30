@@ -109,7 +109,7 @@
 			} ) );
 
 			// Determine the label.
-			if ( typeof textValue == 'string' ) {
+			if ( typeof textValue == 'string' && textValue.length ) {
 				label = textValue.trim();
 			}
 
