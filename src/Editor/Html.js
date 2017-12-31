@@ -1,7 +1,7 @@
 'use strict';
 
 const Editor = require( './Editor' ),
-	utf8decoder = new TextDecoder( 'utf8' ),
+	Reader = require( '../Reader/Reader' ),
 	path = require( 'path' );
 
 class Html extends Editor {
@@ -20,8 +20,9 @@ class Html extends Editor {
 
 	async show( item, type ) {
 		let monaco = await this._getMonaco(),
+			reader = Reader.getReaderFor( item ),
 			wrapper = document.getElementById( 'editor' ),
-			string = utf8decoder.decode( item.getValue( type ) );
+			string = reader.readText( type );
 
 		wrapper.innerHTML = '<div id="monaco-editor"></div>';
 

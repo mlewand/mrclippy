@@ -1,8 +1,7 @@
 'use strict';
 
 const Editor = require( './Editor' ),
-	utf8decoder = new TextDecoder( 'utf8' ),
-	utf16decoder = new TextDecoder( 'utf-16le' );
+	Reader = require( '../Reader/Reader' );
 
 class Text extends Editor {
 	/**
@@ -31,16 +30,9 @@ class Text extends Editor {
 	}
 
 	async show( item, type ) {
-		let bytes = item.getValue( type ),
-			isWinClipboard = item.env.name == 'win32',
-			decoder = ( isWinClipboard && type === 'CF_UNICODETEXT' ) ? utf16decoder : utf8decoder,
-			string = decoder.decode( bytes ),
+		let reader = Reader.getReaderFor( item ),
+			string = reader.readText( item, type ),
 			textarea = this._getTextarea();
-
-		if ( isWinClipboard && string[ string.length - 1 ] === '\0' ) {
-			// Windows always adds NULL byte char at the end.
-			string = string.slice( 0, -1 );
-		}
 
 		if ( !textarea ) {
 			textarea = document.createElement( 'textarea' );
