@@ -51,7 +51,7 @@ module.exports = Object.assign( {}, require( 'electron' ).clipboard, {
 			ret = this[ readFunction ]( type );
 		}
 
-		if ( ret.constructor && ret.constructor.toString().includes( 'NativeImage' ) ) {
+		if ( this._isNativeImage( ret ) ) {
 			// Electron returns NativeImage instances, which is not "serializable", converting to bytes.
 			// At the time of writing NativeImage is not exposed by Electron, so use `toString()`.
 			ret = Buffer.from( ret.toPNG() );
@@ -106,5 +106,36 @@ module.exports = Object.assign( {}, require( 'electron' ).clipboard, {
 		}
 
 		return null;
+	},
+
+	/**
+	 * Checks if given `obj` is a
+	 * [nativeImage](https://github.com/electron/electron/blob/5f4b62b6c86be3786dc7b532c17936311903b2be/docs/api/native-image.md) instance.
+	 *
+	 * Unfortunately Electron does not create these instances consistently across platforms, see implementation comments for more details.
+	 *
+	 * @param {mixed} obj
+	 * @returns {boolean} `true` if
+	 */
+	_isNativeImage( obj ) {
+		if ( !obj ) {
+			return false;
+		}
+
+		// For Mac it uses a native constructor, which is not exposed.
+		if ( obj.constructor && obj.constructor.toString().includes( 'NativeImage' ) ) {
+			return true;
+		}
+
+		const props = new Set( [ 'toPNG', 'toJPEG', 'toBitmap', 'toDataURL', 'crop' ] );
+
+		// For Linux it uses just plain object, so we need to do duck typing here.
+		for ( let propertyName of props ) {
+			if ( !obj[ propertyName ] ) {
+				return false;
+			}
+		}
+
+		return true;
 	}
 }, clip );
