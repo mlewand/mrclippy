@@ -2,14 +2,15 @@
 
 const nativeImage = require( 'electron' ).nativeImage;
 
-let clip = {};
+let customClipboard = {},
+	electronClipboard = require( 'electron' ).clipboard;
 
 if ( process.platform == 'win32' ) {
-	clip = require( './clipboard.win32' );
+	customClipboard = require( './clipboard.win32' );
 }
 
 // Extend returned object, to be ure not to overwrite Electron clipboard object.
-module.exports = Object.assign( {}, require( 'electron' ).clipboard, {
+module.exports = Object.assign( {}, electronClipboard, {
 	/**
 	 * Writes provided snapshot to the current OS clipboard.
 	 *
@@ -34,7 +35,7 @@ module.exports = Object.assign( {}, require( 'electron' ).clipboard, {
 			clipboardData[ electronType ] = curData;
 		}
 
-		clip.write( clipboardData );
+		electronClipboard.write( clipboardData );
 	},
 
 	/**
@@ -138,4 +139,4 @@ module.exports = Object.assign( {}, require( 'electron' ).clipboard, {
 
 		return true;
 	}
-}, clip );
+}, customClipboard );
