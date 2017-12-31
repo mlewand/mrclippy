@@ -7,10 +7,7 @@
 		OsEnvironment = require( './OsEnvironment' ),
 		crc32 = require( 'crc-32' ),
 		deepEql = require( 'deep-eql' ),
-		isBufferBase = require( 'is-buffer' ),
-		isBuffer = function( buffer ) {
-			return isBufferBase( buffer ) || buffer instanceof Object.getPrototypeOf( Int8Array );
-		};
+		isBuffer = require( './utils' ).isBuffer;
 
 	class ClipboardSnapshot extends EventEmitter {
 		/**
@@ -109,7 +106,7 @@
 			} ) );
 
 			// Determine the label.
-			if ( typeof textValue == 'string' ) {
+			if ( typeof textValue == 'string' && textValue.length ) {
 				label = textValue.trim();
 			}
 

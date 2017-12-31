@@ -35,12 +35,15 @@
     "electron-debug": "^1.4.0",
     "electron-rebuild": "^1.5.7",
     "fs-extra": "^4.0.2",
+    "iconv-lite": "^0.4.19",
     "is-buffer": "^1.1.6",
     "jszip": "^3.1.5",
     "localforage": "^1.5.5",
     "pad": "^1.1.0",
-    "sanitize-filename": "^1.6.1",
-    "win-clipboard": "^0.0.5"
+    "sanitize-filename": "^1.6.1"
+  },
+  "optionalDependencies": {
+    "win-clipboard": "^0.0.6"
   },
   "devDependencies": {
     "chai": "^4.1.2",

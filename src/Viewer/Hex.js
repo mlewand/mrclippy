@@ -32,6 +32,10 @@ class Hex extends Viewer {
 			html = '',
 			i;
 
+		if ( typeof value == 'string' ) {
+			value = Buffer.from( value, 'utf8' );
+		}
+
 		for ( i = 0; i < value.length; i++ ) {
 			let byte = value[ i ];
 
