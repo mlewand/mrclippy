@@ -1,4 +1,4 @@
-#previewTypes .btn {
+#previewMenu .btn {
 	margin-right: 0.2em;
 }
 
@@ -6,7 +6,7 @@
 	font-size: 0.9em
 }
 
-#previewTypes {
+#previewMenu {
 	padding-bottom: 0.2em;
 	border-bottom: 1px solid rgba(0, 0, 0, 0.125);
 }
@@ -79,6 +79,17 @@ html .btn-light:focus, html .btn-light.focus {
 	box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
 }
 
-.hidden, #navigation .list-group-item .hidden {
+html .hidden, #navigation .list-group-item .hidden {
 	display: none;
+}
+
+textarea.text-editor {
+	display: flex;
+	flex: 1;
+	min-height: 500px;
+}
+
+#editor, #monaco-editor {
+	min-height: 300px;
+	width: 100%;
 }

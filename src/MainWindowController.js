@@ -32,14 +32,39 @@ class MainWindowController {
 
 		if ( viewerName && this.viewers[ viewerName ] ) {
 			viewer = this.viewers[ viewerName ];
+		} else  {
+			viewerName = this._getViewerName( viewer );
 		}
 
-		this._showContainers( [ 'render', 'previewTypes' ] );
+		this._showContainers( [ 'render', 'previewMenu' ] );
 
 		this.app.previews.update( this.viewers, item, previewType );
 
 		prev.innerHTML = '';
 		viewer.display( item, previewType, prev );
+		this.app.previews.markViewer( viewerName );
+
+		this._appendEditorUi( item, previewType, viewer );
+	}
+
+	/**
+	 * Shows the edit component for a given `item`.
+	 *
+	 * @param {ClipboardSnapshot} item Snapshot to be edited.
+	 * @param {string} type
+	 * @param {Editor} editor
+	 * @returns {Promise} Promise is resolved as edit view is displayed and ready.
+	 */
+	async editItem( item, type, editor ) {
+		if ( !item ) {
+			item = this.app.snapshots.getSelected();
+		}
+
+		if ( item ) {
+			this._showContainers( [ 'previewMenu', 'editor' ] );
+
+			await editor.show( item, type );
+		}
 	}
 
 	/**
@@ -60,7 +85,7 @@ class MainWindowController {
 	 * @param {string[]} containers Id of HTML containers to be shown. All others will be hidden.
 	 */
 	_showContainers( containers ) {
-		const allContainers = [ 'previewTypes', 'content', 'render' ];
+		const allContainers = [ 'previewMenu', 'editor', 'content', 'render' ];
 
 		for ( let id of allContainers ) {
 			let elem = document.getElementById( id );
@@ -68,6 +93,62 @@ class MainWindowController {
 				elem.style.display = containers.includes( id ) ? null : 'none';
 			}
 		}
+	}
+
+	/**
+	 * Appends editor for a given clipboard item.
+	 *
+	 * @private
+	 * @param {ClipboardSnapshot} item
+	 * @param {string} type Clipboard type previewed, e.g. `'HTML Format'`,  `'CF_UNICODE'` etc.
+	 * @param {Viewer} viewer
+	 */
+	async _appendEditorUi( item, type, viewer ) {
+		let editor = viewer.getEditor(),
+			editorButton = document.querySelector( '#previewOptions .edit-btn' ),
+			viewerName = Object.keys( this.viewers ).filter( viewerKey => this.viewers[ viewerKey ] === viewer )[ 0 ];
+
+		const activeCssClass = 'btn-info';
+
+		// In any case remove previous listener.
+		editorButton.removeEventListener( 'click', this._editCallback );
+
+		if ( this._lastEditor ) {
+			await this._lastEditor.hide();
+			this._lastEditor = null;
+		}
+
+		if ( editor ) {
+			editorButton.classList.remove( 'hidden' );
+
+			this._editCallback = async() => {
+				if ( !editorButton.classList.contains( activeCssClass ) ) {
+					editorButton.classList.add( activeCssClass );
+
+					this.editItem( item, type, editor );
+				} else {
+					editorButton.classList.remove( activeCssClass );
+					await editor.save( item, type );
+					// Committing edit value.
+					this.previewItem( item, type, viewerName );
+				}
+			};
+
+			this._lastEditor = editor;
+
+			editorButton.addEventListener( 'click', this._editCallback );
+		} else {
+			editorButton.classList.add( 'hidden' );
+			editorButton.classList.remove( activeCssClass );
+		}
+	}
+
+	/**
+	 * @param {Viewer} viewer
+	 * @returns {string/undefined} Key in {@link _viewers} of a given `viewer`.
+	 */
+	_getViewerName( viewer ) {
+		return Object.keys( this.viewers ).filter( viewerKey => this.viewers[ viewerKey ] === viewer )[ 0 ];
 	}
 }
 

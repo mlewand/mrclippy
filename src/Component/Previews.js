@@ -21,19 +21,36 @@ class Previews extends Component {
 			if ( viewer.handles( type ) ) {
 				this._elem.appendChild( this.getTabFor( item, type, viewer, viewerName ) );
 			}
-			// this._elem.appendChild( this.getTabFor( item, type ) );
 		}
 	}
 
 	getTabFor( item, type, viewer, viewerName ) {
 		let ret = document.createElement( 'button' );
-		ret.classList = 'btn btn-primary';
+		ret.classList = 'btn';
 		ret.innerText = viewer.label;
+		ret.dataset.viewerName = viewerName;
 		ret.addEventListener( 'click', () => {
 			this.controller.previewItem( item, type, viewerName );
+			this.markViewer( viewerName );
 		} );
 
 		return ret;
+	}
+
+	/**
+	 * Marks given viewer as a selected one.
+	 *
+	 * @param {string} viewerName
+	 */
+	markViewer( viewerName ) {
+		this._elem.querySelectorAll( '.btn-primary' ).forEach( el => el.classList.remove( 'btn-primary' ) );
+
+		if ( viewerName ) {
+			let res = this._elem.querySelector( `[data-viewer-name="${viewerName}"]` );
+			if ( res ) {
+				res.classList.add( 'btn-primary' );
+			}
+		}
 	}
 
 	_clear() {

@@ -2,6 +2,68 @@ const ClipboardSnapshotMock = require( './mock/ClipboardSnapshotMock' ),
 	ClipboardSnapshot = require( '../src/ClipboardSnapshot' );
 
 describe( 'ClipboardSnapshot', () => {
+	describe( 'setValue()', () => {
+		let mock;
+
+		beforeEach( () => {
+			mock = new ClipboardSnapshotMock( {
+				aa: Buffer.from( [ 64, 65 ] ),
+				bb: Buffer.from( [ 64, 65 ] )
+			} );
+		} );
+
+		it( 'Changes the data', () => {
+			mock.setValue( 'bb', Buffer.from( [ 68, 68 ] ) );
+
+			expect( mock._content.get( 'bb' ) ).to.be.eql( Buffer.from( [ 68, 68 ] ) );
+		} );
+
+		it( 'Works with Uint8Array', () => {
+			mock.setValue( 'bb', new Uint8Array( [ 76 ] ) );
+
+			expect( mock._content.get( 'bb' ) ).to.be.eql( new Uint8Array( [ 76 ] ) );
+		} );
+
+		it( 'Fires changed event', () => {
+			let changedListener = sinon.spy();
+
+			mock.on( 'changed', changedListener );
+			mock.setValue( 'bb', Buffer.from( [ 68, 68 ] ) );
+
+			expect( changedListener ).to.be.calledOnce;
+		} );
+
+		it( 'Doesnt fire changed event if the data is the same', () => {
+			let changedListener = sinon.spy();
+
+			mock.on( 'changed', changedListener );
+			mock.setValue( 'aa', Buffer.from( [ 64, 65 ] ) );
+
+			expect( changedListener ).not.to.be.called;
+		} );
+
+		it( 'Bails out hashes', () => {
+			mock._hashesCached = 1;
+
+			mock.setValue( 'bb', Buffer.from( [ 72 ] ) );
+
+			expect( mock._hashesCached ).to.be.null;
+		} );
+
+		describe( 'Error handling', () => {
+			before( () => sinon.stub( console, 'error' ) );
+			after( () => console.error.restore() );
+
+			it( 'Reports an error in case of invalid value', () => {
+				mock.setValue( 'bb', undefined );
+
+				// expect( mock._content.get( 'bb' ) ).to.be.eql( Buffer.from( [ 68, 68 ] ) );
+				expect( console.error ).to.be.calledOnce;
+				expect( console.error ).to.be.calledWithExactly( 'ClipboardSnapshot.setValue() invalid argument, expected buffer while undefined was given.' );
+			} );
+		} );
+	} );
+
 	describe( 'createFromData', () => {
 		let sampleData = {
 				meta: {

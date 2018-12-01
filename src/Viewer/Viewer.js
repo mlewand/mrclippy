@@ -22,6 +22,16 @@ class Viewer {
 	}
 
 	/**
+	 * This method is used to return editor interface for a given type.
+	 *
+	 * @param {string} _type Content type.
+	 * @returns {ViewerEditor/null} `null` if not available.
+	 */
+	getEditor( _type ) {
+		return null;
+	}
+
+	/**
 	 * This method implements rendering.
 	 *
 	 * @param {ClipboardSnapshot} item
